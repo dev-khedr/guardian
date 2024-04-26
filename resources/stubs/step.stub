@@ -1,0 +1,13 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
+use Raid\Core\Authentication\Steps\Contracts\StepInterface;
+
+class $CLASS_NAME$ implements StepInterface
+{
+    public function handle(ChannelInterface $channel): void
+    {
+    }
+}

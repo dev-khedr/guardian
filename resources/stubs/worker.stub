@@ -1,0 +1,11 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Raid\Core\Authentication\Workers\Worker;
+use Raid\Core\Authentication\Workers\Contracts\WorkerInterface;
+
+class $CLASS_NAME$ extends Worker implements WorkerInterface
+{
+    public const ATTRIBUTE = '';
+}

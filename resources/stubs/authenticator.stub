@@ -1,0 +1,15 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Raid\Core\Authentication\Authenticators\Authenticator;
+use Raid\Core\Authentication\Authenticators\Contracts\AuthenticatorInterface;
+
+class $CLASS_NAME$ extends Authenticator implements AuthenticatorInterface
+{
+    public const NAME = '';
+
+    protected string $authenticates = '';
+
+    protected array $channels = [];
+}

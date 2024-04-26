@@ -1,0 +1,11 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Raid\Core\Authentication\Channels\Channel;
+use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
+
+class $CLASS_NAME$ extends Channel implements ChannelInterface
+{
+    public const NAME = '';
+}
