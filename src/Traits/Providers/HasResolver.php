@@ -14,9 +14,9 @@ trait HasResolver
 
             $this->publishes([
                 $configPath => config_path(basename($configPath)),
-            ], 'authentication');
+            ], 'guardian');
 
-            $this->mergeConfigFrom($configPath, 'authentication');
+            $this->mergeConfigFrom($configPath, 'guardian');
         }
     }
 
