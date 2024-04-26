@@ -21,7 +21,7 @@ composer require raid/authentication
 Copy the config file to your own project by running the following command
 
 ```bash
-php artisan vendor:publish --provider="Raid\Guardian\Providers\AuthenticationServiceProvider"
+php artisan vendor:publish --provider="Raid\Guardian\Providers\GuardianServiceProvider"
 ```
 
 ## Usage
