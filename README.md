@@ -262,7 +262,6 @@ It matches the defined `Workers` attribute with the given credentials.
 namespace App\Http\Authentication\Channels;
 
 use App\Http\Authentication\Workers\EmailWorker;
-use App\Http\Authentication\Workers\PhoneWorker;
 use Raid\Guardian\Channels\Channel;
 use Raid\Guardian\Channels\Contracts\ChannelInterface;
 
@@ -272,7 +271,6 @@ class SystemChannel extends Channel implements ChannelInterface
     
     protected array $workers = [
         EmailWorker::class,
-        PhoneWorker::class,
     ];
 }
 ```
@@ -287,14 +285,12 @@ You can define the `workers` with two ways:
 
 use App\Http\Authentication\Channels\SystemChannel;
 use App\Http\Authentication\Workers\EmailWorker;
-use App\Http\Authentication\Workers\PhoneWorker;
 
 return [
 
     'channel_workers' => [
         SystemChannel::class => [
             EmailWorker::class,
-            PhoneWorker::class,
         ],
     ],
 ];
@@ -309,7 +305,7 @@ The `Worker` class will be used to find the authenticated user based on the give
 You can use this command to create a new worker class
 
 ```bash
-php artisan raid:make-worker PhoneWorker
+php artisan raid:make-worker EmailWorker
 ```
 
 This will output the following code
@@ -322,7 +318,7 @@ namespace App\Http\Authentication\Workers;
 use Raid\Guardian\Workers\Worker;
 use Raid\Guardian\Workers\Contracts\WorkerInterface;
 
-class PhoneWorker extends Worker implements WorkerInterface
+class EmailWorker extends Worker implements WorkerInterface
 {
     public const ATTRIBUTE = '';
 }
@@ -338,9 +334,9 @@ namespace App\Http\Authentication\Workers;
 use Raid\Guardian\Workers\Worker;
 use Raid\Guardian\Workers\Contracts\WorkerInterface;
 
-class PhoneWorker extends Worker implements WorkerInterface
+class EmailWorker extends Worker implements WorkerInterface
 {
-    public const ATTRIBUTE = 'phone';
+    public const ATTRIBUTE = 'email';
 }
 ```
 
@@ -356,22 +352,6 @@ The `Attribute` is used to match the `Worker` with the given credentials.
 
 The `Query Attribute` is passed to the `findForAuthentication` method to find the user,
 if not defined, it will use the `Attribute` constant instead.
-
-```php
-<?php
-
-namespace App\Http\Authentication\Workers;
-
-use Raid\Guardian\Workers\Worker;
-use Raid\Guardian\Workers\Contracts\WorkerInterface;
-
-class PhoneWorker extends Worker implements WorkerInterface
-{
-    public const ATTRIBUTE = 'phone';
-
-    public const QUERY_ATTRIBUTE = 'phone_number';
-}
-```
 
 ## Rule
 
@@ -696,9 +676,9 @@ You can use the `Channel` class to handle authentication errors through `errors`
 You can add errors to channel using these methods:
 
 ```php
-$channel->errors()->add('key', 'message');
-// or
 $channel->fail('key', 'message');
+// or
+$channel->errors()->add('key', 'message');
 ```
 
 You can check the channel errors using these methods:
