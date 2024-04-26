@@ -1,10 +1,10 @@
 <?php
 
-namespace Raid\Core\Authentication\Rules;
+namespace Raid\Core\Guardian\Rules;
 
 use Illuminate\Support\Facades\Hash;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Rules\Contracts\RuleInterface;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Rules\Contracts\RuleInterface;
 
 class MatchingPasswordRule implements RuleInterface
 {

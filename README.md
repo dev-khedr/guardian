@@ -21,7 +21,7 @@ composer require raid/authentication
 Copy the config file to your own project by running the following command
 
 ```bash
-php artisan vendor:publish --provider="Raid\Core\Authentication\Providers\AuthenticationServiceProvider"
+php artisan vendor:publish --provider="Raid\Core\Guardian\Providers\AuthenticationServiceProvider"
 ```
 
 ## Usage
@@ -72,7 +72,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as IlluminateUser;
-use Raid\Core\Authentication\Authenticates\Contracts\Authenticates;
+use Raid\Core\Guardian\Authenticates\Contracts\Authenticates;
 
 class User extends IlluminateUser implements Authenticates
 {
@@ -110,8 +110,8 @@ This will output the following code
 
 namespace App\Http\Authentication\Authenticators;
 
-use Raid\Core\Authentication\Authenticators\Authenticator;
-use Raid\Core\Authentication\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Core\Guardian\Authenticators\Authenticator;
+use Raid\Core\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
 class UserAuthenticator extends Authenticator implements AuthenticatorInterface
 {
@@ -132,8 +132,8 @@ namespace App\Http\Authentication\Authenticators;
 
 use App\Models\User;
 use App\Http\Authentication\Channels\SystemChannel;
-use Raid\Core\Authentication\Authenticators\Authenticator;
-use Raid\Core\Authentication\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Core\Guardian\Authenticators\Authenticator;
+use Raid\Core\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
 class UserAuthenticator extends Authenticator implements AuthenticatorInterface
 {
@@ -217,8 +217,8 @@ This will output the following code
 
 namespace App\Http\Authentication\Channels;
 
-use Raid\Core\Authentication\Channels\Channel;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Channels\Channel;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
 
 class SystemChannel extends Channel implements ChannelInterface
 {
@@ -233,8 +233,8 @@ Let's configure the `Channel` class.
 
 namespace App\Http\Authentication\Channels;
 
-use Raid\Core\Authentication\Channels\Channel;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Channels\Channel;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
 
 class SystemChannel extends Channel implements ChannelInterface
 {
@@ -258,8 +258,8 @@ namespace App\Http\Authentication\Channels;
 
 use App\Http\Authentication\Workers\EmailWorker;
 use App\Http\Authentication\Workers\PhoneWorker;
-use Raid\Core\Authentication\Channels\Channel;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Channels\Channel;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
 
 class SystemChannel extends Channel implements ChannelInterface
 {
@@ -314,8 +314,8 @@ This will output the following code
 
 namespace App\Http\Authentication\Workers;
 
-use Raid\Core\Authentication\Workers\Worker;
-use Raid\Core\Authentication\Workers\Contracts\WorkerInterface;
+use Raid\Core\Guardian\Workers\Worker;
+use Raid\Core\Guardian\Workers\Contracts\WorkerInterface;
 
 class PhoneWorker extends Worker implements WorkerInterface
 {
@@ -330,8 +330,8 @@ Let's configure the `Worker` class.
 
 namespace App\Http\Authentication\Workers;
 
-use Raid\Core\Authentication\Workers\Worker;
-use Raid\Core\Authentication\Workers\Contracts\WorkerInterface;
+use Raid\Core\Guardian\Workers\Worker;
+use Raid\Core\Guardian\Workers\Contracts\WorkerInterface;
 
 class PhoneWorker extends Worker implements WorkerInterface
 {
@@ -357,8 +357,8 @@ if not defined, it will use the `Attribute` constant instead.
 
 namespace App\Http\Authentication\Workers;
 
-use Raid\Core\Authentication\Workers\Worker;
-use Raid\Core\Authentication\Workers\Contracts\WorkerInterface;
+use Raid\Core\Guardian\Workers\Worker;
+use Raid\Core\Guardian\Workers\Contracts\WorkerInterface;
 
 class PhoneWorker extends Worker implements WorkerInterface
 {
@@ -381,9 +381,9 @@ Then you can define your `Rules`.
 namespace App\Http\Authentication\Channels;
 
 use App\Http\Authentication\Rules\VerifiedRule;
-use Raid\Core\Authentication\Channels\Channel;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Channels\Contracts\ShouldRunRules;
+use Raid\Core\Guardian\Channels\Channel;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Channels\Contracts\ShouldRunRules;
 
 class SystemChannel extends Channel implements ChannelInterface, ShouldRunRules
 {
@@ -429,8 +429,8 @@ This will output the following code
 
 namespace App\Http\Authentication\Rules;
 
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Rules\Contracts\RuleInterface;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Rules\Contracts\RuleInterface;
 
 class VerifiedRule implements RuleInterface
 {
@@ -450,8 +450,8 @@ Let's configure the `Rule` class.
 
 namespace App\Http\Authentication\Rules;
 
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Rules\Contracts\RuleInterface;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Rules\Contracts\RuleInterface;
 
 class VerifiedRule implements RuleInterface
 {
@@ -488,9 +488,9 @@ Then you can define your `Steps`.
 namespace App\Http\Authentication\Channels;
 
 use App\Http\Authentication\Steps\TwoFactorEmailStep;
-use Raid\Core\Authentication\Channels\Channel;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Channels\Contracts\ShouldRunSteps;
+use Raid\Core\Guardian\Channels\Channel;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Channels\Contracts\ShouldRunSteps;
 
 class SystemChannel extends Channel implements ChannelInterface, ShouldRunSteps
 {
@@ -537,8 +537,8 @@ This will output the following code
 
 namespace App\Http\Authentication\Steps;
 
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Steps\Contracts\StepInterface;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Steps\Contracts\StepInterface;
 
 class TwoFactorEmailStep implements StepInterface
 {
@@ -557,8 +557,8 @@ namespace App\Http\Authentication\Steps;
 
 use App\Core\Integrations\Mail\MailService;
 use App\Mail\TwoFactorMail;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Steps\Contracts\StepInterface;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Steps\Contracts\StepInterface;
 
 class TwoFactorEmailStep implements StepInterface
 {
@@ -613,9 +613,9 @@ namespace App\Http\Authentication\Steps;
 
 use App\Mail\TwoFactorMail;
 use App\Core\Integrations\Mail\MailService;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Steps\Contracts\StepInterface;
-use Raid\Core\Authentication\Steps\Contracts\ShouldRunQueue;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Steps\Contracts\StepInterface;
+use Raid\Core\Guardian\Steps\Contracts\ShouldRunQueue;
 
 class TwoFactorEmailStep implements StepInterface, ShouldRunQueue
 {

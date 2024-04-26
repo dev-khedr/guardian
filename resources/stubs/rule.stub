@@ -2,8 +2,8 @@
 
 namespace $NAMESPACE$;
 
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Rules\Contracts\RuleInterface;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Rules\Contracts\RuleInterface;
 
 class $CLASS_NAME$ implements RuleInterface
 {

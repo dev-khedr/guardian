@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Rules;
+namespace Raid\Core\Guardian\Rules;
 
-use Raid\Core\Authentication\Rules\Contracts\RuleInterface;
+use Raid\Core\Guardian\Rules\Contracts\RuleInterface;
 
 abstract class Rule implements RuleInterface
 {

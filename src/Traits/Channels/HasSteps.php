@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Traits\Channels;
+namespace Raid\Core\Guardian\Traits\Channels;
 
-use Raid\Core\Authentication\Steps\Contracts\ShouldRunQueue;
+use Raid\Core\Guardian\Steps\Contracts\ShouldRunQueue;
 
 trait HasSteps
 {

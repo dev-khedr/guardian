@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Errors\Contracts;
+namespace Raid\Core\Guardian\Errors\Contracts;
 
 interface ErrorsInterface
 {

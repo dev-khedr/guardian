@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Steps\Contracts;
+namespace Raid\Core\Guardian\Steps\Contracts;
 
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
 
 interface ShouldRunQueue
 {

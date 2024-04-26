@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Channels;
+namespace Raid\Core\Guardian\Channels;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Core\Authentication\Authenticates\Contracts\Authenticates;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Channels\Contracts\ShouldRunRules;
-use Raid\Core\Authentication\Channels\Contracts\ShouldRunSteps;
-use Raid\Core\Authentication\Tokens\Contracts\TokenInterface;
-use Raid\Core\Authentication\Traits\Channels\HasAuthenticatable;
-use Raid\Core\Authentication\Traits\Channels\HasCredentials;
-use Raid\Core\Authentication\Traits\Channels\HasErrors;
-use Raid\Core\Authentication\Traits\Channels\HasRules;
-use Raid\Core\Authentication\Traits\Channels\HasSteps;
-use Raid\Core\Authentication\Traits\Channels\HasToken;
-use Raid\Core\Authentication\Traits\Channels\HasWorkers;
+use Raid\Core\Guardian\Authenticates\Contracts\Authenticates;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Channels\Contracts\ShouldRunRules;
+use Raid\Core\Guardian\Channels\Contracts\ShouldRunSteps;
+use Raid\Core\Guardian\Tokens\Contracts\TokenInterface;
+use Raid\Core\Guardian\Traits\Channels\HasAuthenticatable;
+use Raid\Core\Guardian\Traits\Channels\HasCredentials;
+use Raid\Core\Guardian\Traits\Channels\HasErrors;
+use Raid\Core\Guardian\Traits\Channels\HasRules;
+use Raid\Core\Guardian\Traits\Channels\HasSteps;
+use Raid\Core\Guardian\Traits\Channels\HasToken;
+use Raid\Core\Guardian\Traits\Channels\HasWorkers;
 
 abstract class Channel implements ChannelInterface
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Channels;
+namespace Raid\Core\Guardian\Channels;
 
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Channels\Contracts\ShouldRunRules;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Channels\Contracts\ShouldRunRules;
 
 class DefaultChannel extends Channel implements ChannelInterface, ShouldRunRules
 {

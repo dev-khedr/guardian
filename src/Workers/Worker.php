@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Workers;
+namespace Raid\Core\Guardian\Workers;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Core\Authentication\Authenticates\Contracts\Authenticates;
-use Raid\Core\Authentication\Workers\Contracts\WorkerInterface;
+use Raid\Core\Guardian\Authenticates\Contracts\Authenticates;
+use Raid\Core\Guardian\Workers\Contracts\WorkerInterface;
 
 abstract class Worker implements WorkerInterface
 {

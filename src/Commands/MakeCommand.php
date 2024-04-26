@@ -1,6 +1,6 @@
 <?php
 
-namespace Raid\Core\Authentication\Commands;
+namespace Raid\Core\Guardian\Commands;
 
 use Illuminate\Console\Command;
 

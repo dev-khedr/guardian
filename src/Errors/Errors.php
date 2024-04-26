@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Errors;
+namespace Raid\Core\Guardian\Errors;
 
-use Raid\Core\Authentication\Errors\Contracts\ErrorsInterface;
+use Raid\Core\Guardian\Errors\Contracts\ErrorsInterface;
 
 class Errors implements ErrorsInterface
 {

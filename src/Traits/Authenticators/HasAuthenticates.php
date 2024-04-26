@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Traits\Authenticators;
+namespace Raid\Core\Guardian\Traits\Authenticators;
 
 trait HasAuthenticates
 {

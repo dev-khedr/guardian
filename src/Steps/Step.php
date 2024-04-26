@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Steps;
+namespace Raid\Core\Guardian\Steps;
 
-use Raid\Core\Authentication\Steps\Contracts\StepInterface;
+use Raid\Core\Guardian\Steps\Contracts\StepInterface;
 
 abstract class Step implements StepInterface
 {

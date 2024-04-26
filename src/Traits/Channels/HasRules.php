@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Traits\Channels;
+namespace Raid\Core\Guardian\Traits\Channels;
 
 trait HasRules
 {

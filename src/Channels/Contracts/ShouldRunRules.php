@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Channels\Contracts;
+namespace Raid\Core\Guardian\Channels\Contracts;
 
 interface ShouldRunRules
 {

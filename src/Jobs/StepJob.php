@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Authentication\Jobs;
+namespace Raid\Core\Guardian\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Raid\Core\Authentication\Channels\Contracts\ChannelInterface;
-use Raid\Core\Authentication\Steps\Contracts\StepInterface;
+use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Core\Guardian\Steps\Contracts\StepInterface;
 
 class StepJob implements ShouldQueue
 {
