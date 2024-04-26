@@ -23,13 +23,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Raid\\Core\\Guardian\\": "src"
+            "Raid\\Guardian\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Raid\\Core\\Guardian\\Providers\\GuardianServiceProvider"
+                "Raid\\Guardian\\Providers\\GuardianServiceProvider"
             ]
         }
     },

@@ -1,8 +1,8 @@
 <?php
 
-use Raid\Core\Guardian\Channels\DefaultChannel;
-use Raid\Core\Guardian\Rules\MatchingPasswordRule;
-use Raid\Core\Guardian\Workers\EmailWorker;
+use Raid\Guardian\Channels\DefaultChannel;
+use Raid\Guardian\Rules\MatchingPasswordRule;
+use Raid\Guardian\Workers\EmailWorker;
 
 return [
 

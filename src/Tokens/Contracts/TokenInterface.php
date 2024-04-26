@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Tokens\Contracts;
+namespace Raid\Guardian\Tokens\Contracts;
 
 use DateTimeInterface;
 

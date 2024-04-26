@@ -2,8 +2,8 @@
 
 namespace $NAMESPACE$;
 
-use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Core\Guardian\Steps\Contracts\StepInterface;
+use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Steps\Contracts\StepInterface;
 
 class $CLASS_NAME$ implements StepInterface
 {

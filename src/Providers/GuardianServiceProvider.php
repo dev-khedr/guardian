@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Providers;
+namespace Raid\Guardian\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Raid\Core\Guardian\Commands\MakeAuthenticator;
-use Raid\Core\Guardian\Commands\MakeChannel;
-use Raid\Core\Guardian\Commands\MakeRule;
-use Raid\Core\Guardian\Commands\MakeStep;
-use Raid\Core\Guardian\Commands\MakeWorker;
-use Raid\Core\Guardian\Traits\Providers\HasResolver;
+use Raid\Guardian\Commands\MakeAuthenticator;
+use Raid\Guardian\Commands\MakeChannel;
+use Raid\Guardian\Commands\MakeRule;
+use Raid\Guardian\Commands\MakeStep;
+use Raid\Guardian\Commands\MakeWorker;
+use Raid\Guardian\Traits\Providers\HasResolver;
 
 class GuardianServiceProvider extends ServiceProvider
 {

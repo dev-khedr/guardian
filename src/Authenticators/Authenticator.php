@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Authenticators;
+namespace Raid\Guardian\Authenticators;
 
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Core\Guardian\Authenticators\Contracts\AuthenticatorInterface;
-use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Core\Guardian\Tokens\Contracts\TokenInterface;
-use Raid\Core\Guardian\Traits\Authenticators\HasAuthenticates;
-use Raid\Core\Guardian\Traits\Authenticators\HasChannels;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Tokens\Contracts\TokenInterface;
+use Raid\Guardian\Traits\Authenticators\HasAuthenticates;
+use Raid\Guardian\Traits\Authenticators\HasChannels;
 
 class Authenticator implements AuthenticatorInterface
 {

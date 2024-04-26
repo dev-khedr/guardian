@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Authenticators\Contracts;
+namespace Raid\Guardian\Authenticators\Contracts;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Core\Guardian\Tokens\Contracts\TokenInterface;
+use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Tokens\Contracts\TokenInterface;
 
 interface AuthenticatorInterface
 {

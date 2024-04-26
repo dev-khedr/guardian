@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Authenticates\Contracts;
+namespace Raid\Guardian\Authenticates\Contracts;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 

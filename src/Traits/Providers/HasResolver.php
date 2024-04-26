@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Traits\Providers;
+namespace Raid\Guardian\Traits\Providers;
 
 trait HasResolver
 {

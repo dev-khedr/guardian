@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Rules\Contracts;
+namespace Raid\Guardian\Rules\Contracts;
 
-use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Channels\Contracts\ChannelInterface;
 
 interface RuleInterface
 {

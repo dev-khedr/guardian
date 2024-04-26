@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Tokens;
+namespace Raid\Guardian\Tokens;
 
 use DateTimeInterface;
-use Raid\Core\Guardian\Tokens\Contracts\TokenInterface;
+use Raid\Guardian\Tokens\Contracts\TokenInterface;
 
 class Token implements TokenInterface
 {

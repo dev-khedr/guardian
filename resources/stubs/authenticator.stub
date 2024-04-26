@@ -2,8 +2,8 @@
 
 namespace $NAMESPACE$;
 
-use Raid\Core\Guardian\Authenticators\Authenticator;
-use Raid\Core\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
 class $CLASS_NAME$ extends Authenticator implements AuthenticatorInterface
 {

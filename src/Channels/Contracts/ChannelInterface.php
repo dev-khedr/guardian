@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Channels\Contracts;
+namespace Raid\Guardian\Channels\Contracts;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Core\Guardian\Authenticates\Contracts\Authenticates;
-use Raid\Core\Guardian\Errors\Contracts\ErrorsInterface;
-use Raid\Core\Guardian\Tokens\Contracts\TokenInterface;
-use Raid\Core\Guardian\Workers\Contracts\WorkerInterface;
+use Raid\Guardian\Authenticates\Contracts\Authenticates;
+use Raid\Guardian\Errors\Contracts\ErrorsInterface;
+use Raid\Guardian\Tokens\Contracts\TokenInterface;
+use Raid\Guardian\Workers\Contracts\WorkerInterface;
 
 interface ChannelInterface
 {

@@ -2,8 +2,8 @@
 
 namespace $NAMESPACE$;
 
-use Raid\Core\Guardian\Workers\Worker;
-use Raid\Core\Guardian\Workers\Contracts\WorkerInterface;
+use Raid\Guardian\Workers\Worker;
+use Raid\Guardian\Workers\Contracts\WorkerInterface;
 
 class $CLASS_NAME$ extends Worker implements WorkerInterface
 {

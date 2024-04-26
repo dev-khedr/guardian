@@ -2,8 +2,8 @@
 
 namespace $NAMESPACE$;
 
-use Raid\Core\Guardian\Channels\Channel;
-use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Channels\Channel;
+use Raid\Guardian\Channels\Contracts\ChannelInterface;
 
 class $CLASS_NAME$ extends Channel implements ChannelInterface
 {

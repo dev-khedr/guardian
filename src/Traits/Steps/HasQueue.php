@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Traits\Steps;
+namespace Raid\Guardian\Traits\Steps;
 
 use DateInterval;
 use DateTimeInterface;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Raid\Core\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Core\Guardian\Jobs\StepJob;
+use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Jobs\StepJob;
 
 trait HasQueue
 {

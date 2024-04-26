@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Traits\Channels;
+namespace Raid\Guardian\Traits\Channels;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Core\Guardian\Tokens\Contracts\TokenInterface;
+use Raid\Guardian\Tokens\Contracts\TokenInterface;
 
 trait HasAuthenticatable
 {

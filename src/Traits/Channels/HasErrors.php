@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Traits\Channels;
+namespace Raid\Guardian\Traits\Channels;
 
-use Raid\Core\Guardian\Errors\Contracts\ErrorsInterface;
-use Raid\Core\Guardian\Errors\Errors;
+use Raid\Guardian\Errors\Contracts\ErrorsInterface;
+use Raid\Guardian\Errors\Errors;
 
 trait HasErrors
 {

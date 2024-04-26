@@ -1,6 +1,6 @@
 <?php
 
-namespace Raid\Core\Guardian\Commands;
+namespace Raid\Guardian\Commands;
 
 class MakeWorker extends MakeCommand
 {

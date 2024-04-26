@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Rules;
+namespace Raid\Guardian\Rules;
 
-use Raid\Core\Guardian\Rules\Contracts\RuleInterface;
+use Raid\Guardian\Rules\Contracts\RuleInterface;
 
 abstract class Rule implements RuleInterface
 {

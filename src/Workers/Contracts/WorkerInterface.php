@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Workers\Contracts;
+namespace Raid\Guardian\Workers\Contracts;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Core\Guardian\Authenticates\Contracts\Authenticates;
+use Raid\Guardian\Authenticates\Contracts\Authenticates;
 
 interface WorkerInterface
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Workers;
+namespace Raid\Guardian\Workers;
 
-use Raid\Core\Guardian\Workers\Contracts\WorkerInterface;
+use Raid\Guardian\Workers\Contracts\WorkerInterface;
 
 class EmailWorker extends Worker implements WorkerInterface
 {

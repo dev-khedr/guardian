@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Raid\Core\Guardian\Traits\Channels;
+namespace Raid\Guardian\Traits\Channels;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Core\Guardian\Authenticates\Contracts\Authenticates;
-use Raid\Core\Guardian\Workers\Contracts\WorkerInterface;
+use Raid\Guardian\Authenticates\Contracts\Authenticates;
+use Raid\Guardian\Workers\Contracts\WorkerInterface;
 
 trait HasWorkers
 {
