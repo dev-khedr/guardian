@@ -69,13 +69,13 @@ trait HasChannels
     {
         return isset($this->channels) ?
             $this->getChannels() :
-            config('authentication.authenticator_channels.'.static::class, []);
+            config('guardian.authenticator_channels.'.static::class, []);
     }
 
     protected function getConfiguredDefaultChannel(): ?string
     {
         return isset($this->defaultChannel) ?
             $this->getDefaultChannel() :
-            config('authentication.default_channel');
+            config('guardian.default_channel');
     }
 }

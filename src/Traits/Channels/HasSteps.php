@@ -26,7 +26,7 @@ trait HasSteps
     {
         return isset($this->steps) ?
             $this->getSteps() :
-            config('authentication.channel_steps.'.static::class, []);
+            config('guardian.channel_steps.'.static::class, []);
     }
 
     protected function runSteps(): void

@@ -24,7 +24,7 @@ trait HasRules
     {
         return isset($this->rules) ?
             $this->getRules() :
-            config('authentication.channel_rules.'.static::class, []);
+            config('guardian.channel_rules.'.static::class, []);
     }
 
     protected function runRules(): bool

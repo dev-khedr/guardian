@@ -40,7 +40,7 @@ trait HasWorkers
     {
         return isset($this->workers) ?
             $this->getWorkers() :
-            config('authentication.channel_workers.'.static::class, []);
+            config('guardian.channel_workers.'.static::class, []);
     }
 
     protected function findAuthenticatable(Authenticates $authenticates, array $credentials): ?Authenticatable
