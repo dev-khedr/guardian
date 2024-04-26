@@ -13,7 +13,7 @@ it offers a new concepts to control authentication such as:
 ## Installation
 
 ```bash
-composer require raid/authentication
+composer require raid/guardian
 ```
 
 ## Configuration
