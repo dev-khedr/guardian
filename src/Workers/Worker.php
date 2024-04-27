@@ -13,7 +13,7 @@ abstract class Worker implements WorkerInterface
 {
     public const ATTRIBUTE = '';
 
-    public const QUERY_ATTRIBUTE = null;
+    protected const QUERY_ATTRIBUTE = null;
 
     public static function getAttribute(): string
     {
