@@ -45,6 +45,6 @@ abstract class Worker implements WorkerInterface
 
     public function fail(ChannelInterface $channel): void
     {
-        $channel->fail(message: __('auth.authenticatable_not_found'));
+        $channel->fail(message: __('auth.failed'));
     }
 }
