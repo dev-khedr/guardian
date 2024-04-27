@@ -6,7 +6,6 @@ namespace Raid\Guardian\Traits\Steps;
 
 use DateInterval;
 use DateTimeInterface;
-use Illuminate\Foundation\Bus\PendingDispatch;
 use Raid\Guardian\Channels\Contracts\ChannelInterface;
 use Raid\Guardian\Jobs\StepJob;
 
@@ -34,42 +33,18 @@ trait HasQueue
 
     public function queue(ChannelInterface $channel): void
     {
-        $this->processJob(
-            $this->getJob()::dispatch($this, $channel),
-        );
-    }
+        $job = $this->getJob()::dispatch($this, $channel);
 
-    protected function processJob(PendingDispatch $job): void
-    {
-        $this->processConnection($job, $this->getConnection());
-        $this->processQueue($job, $this->getQueue());
-        $this->processDelay($job, $this->getDelay());
-    }
-
-    protected function processConnection(PendingDispatch $job, ?string $connection): void
-    {
-        if (! $connection) {
-            return;
+        if ($connection = $this->getConnection()) {
+            $job->onConnection($connection);
         }
 
-        $job->onConnection($connection);
-    }
-
-    protected function processQueue(PendingDispatch $job, ?string $queue): void
-    {
-        if (! $queue) {
-            return;
+        if ($queue = $this->getQueue()) {
+            $job->onQueue($queue);
         }
 
-        $job->onQueue($queue);
-    }
-
-    protected function processDelay(PendingDispatch $job, DateInterval|DateTimeInterface|int|null $delay): void
-    {
-        if (! $delay) {
-            return;
+        if ($delay = $this->getDelay()) {
+            $job->delay($delay);
         }
-
-        $job->delay($delay);
     }
 }
