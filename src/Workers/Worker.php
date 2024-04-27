@@ -6,6 +6,7 @@ namespace Raid\Guardian\Workers;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Raid\Guardian\Authenticates\Contracts\Authenticates;
+use Raid\Guardian\Channels\Contracts\ChannelInterface;
 use Raid\Guardian\Workers\Contracts\WorkerInterface;
 
 abstract class Worker implements WorkerInterface
@@ -40,5 +41,10 @@ abstract class Worker implements WorkerInterface
             $this->getWorkerAttribute(),
             $this->getWorkerValue($credentials),
         );
+    }
+
+    public function fail(ChannelInterface $channel): void
+    {
+        $channel->fail(message: __('auth.authenticatable_not_found'));
     }
 }

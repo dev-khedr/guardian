@@ -82,7 +82,7 @@ trait HasWorkers
 
         $authenticatable ?
             $this->setAuthenticatable($authenticatable) :
-            $this->fail(message: __('auth.authenticatable_not_found'));
+            $worker->fail($this);
 
         return $authenticatable;
     }
