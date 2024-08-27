@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Raid\Guardian\Channels\Contracts;
+namespace Raid\Guardian\Authenticators\Contracts;
 
-interface ShouldRunRules
+interface ShouldRunNorms
 {
     public function setRules(array $rules): static;
 

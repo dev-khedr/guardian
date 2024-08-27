@@ -8,7 +8,7 @@ class MakeChannel extends MakeCommand
 
     protected $description = 'Make a new channel class';
 
-    protected string $type = 'Channel';
+    protected string $type = 'Authenticator';
 
     protected function getClassPath(): string
     {

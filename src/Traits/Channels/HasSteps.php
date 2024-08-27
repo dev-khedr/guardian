@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Raid\Guardian\Traits\Channels;
 
-use Raid\Guardian\Steps\Contracts\ShouldRunQueue;
+use Raid\Guardian\Sequences\Contracts\QueueSequenceInterface;
 
 trait HasSteps
 {
@@ -35,7 +35,7 @@ trait HasSteps
 
             $step = app($step);
 
-            $step instanceof ShouldRunQueue ?
+            $step instanceof QueueSequenceInterface ?
                 $step->queue($this) :
                 $step->handle($this);
         }

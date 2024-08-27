@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Raid\Guardian\Traits\Channels;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Guardian\Authenticates\Contracts\Authenticates;
-use Raid\Guardian\Workers\Contracts\WorkerInterface;
+use Raid\Guardian\Authenticates\Contracts\Authenticatable;
+use Raid\Guardian\Matchers\Contracts\MatcherInterface;
 
 trait HasWorkers
 {
     protected array $workers;
 
-    protected WorkerInterface $worker;
+    protected MatcherInterface $worker;
 
     public function setWorkers(array $workers): static
     {
@@ -26,12 +26,12 @@ trait HasWorkers
         return $this->workers;
     }
 
-    protected function setWorker(WorkerInterface $worker): void
+    protected function setWorker(MatcherInterface $worker): void
     {
         $this->worker = $worker;
     }
 
-    public function getWorker(): WorkerInterface
+    public function getWorker(): MatcherInterface
     {
         return $this->worker;
     }
@@ -43,7 +43,7 @@ trait HasWorkers
             config('guardian.channel_workers.'.static::class, []);
     }
 
-    protected function findAuthenticatable(Authenticates $authenticates, array $credentials): ?Authenticatable
+    protected function findAuthenticatable(Authenticatable $authenticates, array $credentials): ?Authenticatable
     {
         $worker = $this->getChannelWorker($credentials);
 
@@ -52,7 +52,7 @@ trait HasWorkers
             null;
     }
 
-    protected function getChannelWorker(array $credentials): ?WorkerInterface
+    protected function getChannelWorker(array $credentials): ?MatcherInterface
     {
         $worker = $this->getWorkerForCredentials($credentials);
 
@@ -63,7 +63,7 @@ trait HasWorkers
         return $worker;
     }
 
-    protected function getWorkerForCredentials(array $credentials): ?WorkerInterface
+    protected function getWorkerForCredentials(array $credentials): ?MatcherInterface
     {
         foreach ($this->getConfiguredWorkers() as $worker) {
             if (! array_key_exists($worker::getAttribute(), $credentials)) {
@@ -76,7 +76,7 @@ trait HasWorkers
         return null;
     }
 
-    protected function findWorkerAuthenticatable(WorkerInterface $worker, Authenticates $authenticates, array $credentials): ?Authenticatable
+    protected function findWorkerAuthenticatable(MatcherInterface $worker, Authenticatable $authenticates, array $credentials): ?Authenticatable
     {
         $authenticatable = $worker->find($authenticates, $credentials);
 

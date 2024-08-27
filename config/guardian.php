@@ -1,24 +1,24 @@
 <?php
 
-use Raid\Guardian\Channels\DefaultChannel;
-use Raid\Guardian\Rules\MatchingPasswordRule;
-use Raid\Guardian\Workers\EmailWorker;
+use Raid\Guardian\Authenticators\DefaultAuthenticator;
+use Raid\Guardian\Norms\MatchingPasswordNorm;
+use Raid\Guardian\Matchers\EmailMatcher;
 
 return [
 
-    'default_channel' => DefaultChannel::class,
+    'default_channel' => DefaultAuthenticator::class,
 
     'authenticator_channels' => [],
 
     'channel_workers' => [
-        DefaultChannel::class => [
-            EmailWorker::class,
+        DefaultAuthenticator::class => [
+            EmailMatcher::class,
         ],
     ],
 
     'channel_rules' => [
-        DefaultChannel::class => [
-            MatchingPasswordRule::class,
+        DefaultAuthenticator::class => [
+            MatchingPasswordNorm::class,
         ],
     ],
 

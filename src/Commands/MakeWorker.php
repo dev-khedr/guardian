@@ -8,7 +8,7 @@ class MakeWorker extends MakeCommand
 
     protected $description = 'Make a new worker class';
 
-    protected string $type = 'Worker';
+    protected string $type = 'Matcher';
 
     protected function getClassPath(): string
     {

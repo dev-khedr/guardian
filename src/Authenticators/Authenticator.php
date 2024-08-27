@@ -4,20 +4,31 @@ declare(strict_types=1);
 
 namespace Raid\Guardian\Authenticators;
 
-use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Raid\Guardian\Authenticates\Contracts\Authenticatable;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Authenticators\Contracts\ShouldRunNorms;
+use Raid\Guardian\Authenticators\Contracts\ShouldRunSequences;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
-use Raid\Guardian\Traits\Authenticators\HasAuthenticates;
-use Raid\Guardian\Traits\Authenticators\HasChannels;
+use Raid\Guardian\Traits\Channels\HasAuthenticatable;
+use Raid\Guardian\Traits\Channels\HasCredentials;
+use Raid\Guardian\Traits\Channels\HasErrors;
+use Raid\Guardian\Traits\Channels\HasRules;
+use Raid\Guardian\Traits\Channels\HasSteps;
+use Raid\Guardian\Traits\Channels\HasToken;
+use Raid\Guardian\Traits\Channels\HasWorkers;
 
-class Authenticator implements AuthenticatorInterface
+abstract class Authenticator implements AuthenticatorInterface
 {
-    use HasAuthenticates;
-    use HasChannels;
+    use HasAuthenticatable;
+    use HasCredentials;
+    use HasErrors;
+    use HasRules;
+    use HasSteps;
+    use HasToken;
+    use HasWorkers;
 
-    protected const NAME = '';
+    public const NAME = '';
 
     public static function new(): static
     {
@@ -29,26 +40,38 @@ class Authenticator implements AuthenticatorInterface
         return static::NAME;
     }
 
-    /**
-     * @throws Exception
-     */
-    public function attempt(array $credentials, ?string $channel = null, ?TokenInterface $token = null): ChannelInterface
+    public function attempt(Authenticatable $authenticates, array $credentials, ?TokenInterface $token = null): static
     {
-        return $this->getChannel($channel)::new()->attempt(
-            app($this->getAuthenticates()),
-            $credentials,
-            $token,
-        );
+        $this->setCredentials($credentials);
+
+        $authenticatable = $this->findAuthenticatable($authenticates, $credentials);
+
+        if ($this->failed()) {
+            return $this;
+        }
+
+        if ($this instanceof ShouldRunNorms && ! $this->runRules()) {
+
+            return $this;
+        }
+
+        if ($this instanceof ShouldRunSequences) {
+            $this->runSteps();
+
+            return $this;
+        }
+
+        $this->authenticate($authenticatable, $token);
+
+        return $this;
     }
 
-    /**
-     * @throws Exception
-     */
-    public function login(Authenticatable $authenticatable, ?string $channel = null, ?TokenInterface $token = null): ChannelInterface
+    public function login(Authenticatable $authenticatable, ?TokenInterface $token = null): static
     {
-        return $this->getChannel($channel)::new()->login(
-            $authenticatable,
-            $token,
-        );
+        $this->setAuthenticatable($authenticatable);
+
+        $this->authenticate($authenticatable, $token);
+
+        return $this;
     }
 }

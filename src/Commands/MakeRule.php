@@ -8,7 +8,7 @@ class MakeRule extends MakeCommand
 
     protected $description = 'Make a new rule class';
 
-    protected string $type = 'Rule';
+    protected string $type = 'Norm';
 
     protected function getClassPath(): string
     {

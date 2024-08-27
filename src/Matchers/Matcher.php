@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Raid\Guardian\Workers;
+namespace Raid\Guardian\Matchers;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Guardian\Authenticates\Contracts\Authenticates;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Guardian\Workers\Contracts\WorkerInterface;
+use Raid\Guardian\Authenticates\Contracts\Authenticatable;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Matchers\Contracts\MatcherInterface;
 
-abstract class Worker implements WorkerInterface
+abstract class Matcher implements MatcherInterface
 {
     public const ATTRIBUTE = '';
 
@@ -35,15 +34,15 @@ abstract class Worker implements WorkerInterface
         return $credentials[static::getAttribute()];
     }
 
-    public function find(Authenticates $authenticates, array $credentials): ?Authenticatable
+    public function find(Authenticatable $authenticatable, array $credentials): ?Authenticatable
     {
-        return $authenticates->findForAuthentication(
+        return $authenticatable->findForAuthentication(
             $this->getWorkerAttribute(),
             $this->getWorkerValue($credentials),
         );
     }
 
-    public function fail(ChannelInterface $channel): void
+    public function fail(AuthenticatorInterface $channel): void
     {
         $channel->fail(message: __('auth.failed'));
     }

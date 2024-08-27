@@ -8,7 +8,7 @@ class MakeAuthenticator extends MakeCommand
 
     protected $description = 'Make a new authenticator class';
 
-    protected string $type = 'Authenticator';
+    protected string $type = 'Guardian';
 
     protected function getClassPath(): string
     {

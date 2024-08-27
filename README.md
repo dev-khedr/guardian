@@ -77,9 +77,9 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as IlluminateUser;
-use Raid\Guardian\Authenticates\Contracts\Authenticates;
+use Raid\Guardian\Authenticates\Contracts\Authenticatable;
 
-class User extends IlluminateUser implements Authenticates
+class User extends IlluminateUser implements Authenticatable
 {
     use HasApiTokens;
 
@@ -115,10 +115,10 @@ This will output the following code
 
 namespace App\Http\Authentication\Authenticators;
 
-use Raid\Guardian\Authenticators\Authenticator;
-use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Guardians\Guardian;
+use Raid\Guardian\Guardians\Contracts\GuardianInterface;
 
-class UserAuthenticator extends Authenticator implements AuthenticatorInterface
+class UserAuthenticator extends Guardian implements GuardianInterface
 {
     public const NAME = '';
 
@@ -137,10 +137,10 @@ namespace App\Http\Authentication\Authenticators;
 
 use App\Models\User;
 use App\Http\Authentication\Channels\SystemChannel;
-use Raid\Guardian\Authenticators\Authenticator;
-use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Guardians\Guardian;
+use Raid\Guardian\Guardians\Contracts\GuardianInterface;
 
-class UserAuthenticator extends Authenticator implements AuthenticatorInterface
+class UserAuthenticator extends Guardian implements GuardianInterface
 {
     public const NAME = 'user';
 
@@ -222,10 +222,10 @@ This will output the following code
 
 namespace App\Http\Authentication\Channels;
 
-use Raid\Guardian\Channels\Channel;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
-class SystemChannel extends Channel implements ChannelInterface
+class SystemChannel extends Authenticator implements AuthenticatorInterface
 {
     public const NAME = '';
 }
@@ -238,10 +238,10 @@ Let's configure the `Channel` class.
 
 namespace App\Http\Authentication\Channels;
 
-use Raid\Guardian\Channels\Channel;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
-class SystemChannel extends Channel implements ChannelInterface
+class SystemChannel extends Authenticator implements AuthenticatorInterface
 {
     public const NAME = 'system';
 }
@@ -262,10 +262,10 @@ It matches the defined `Workers` attribute with the given credentials.
 namespace App\Http\Authentication\Channels;
 
 use App\Http\Authentication\Workers\EmailWorker;
-use Raid\Guardian\Channels\Channel;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
-class SystemChannel extends Channel implements ChannelInterface
+class SystemChannel extends Authenticator implements AuthenticatorInterface
 {
     public const NAME = 'system';
     
@@ -305,7 +305,7 @@ The `Worker` class will be used to find the authenticated user based on the give
 You can use this command to create a new worker class
 
 ```bash
-php artisan raid:make-worker EmailWorker
+php artisan raid:make-worker EmailMatcher
 ```
 
 This will output the following code
@@ -315,10 +315,10 @@ This will output the following code
 
 namespace App\Http\Authentication\Workers;
 
-use Raid\Guardian\Workers\Worker;
-use Raid\Guardian\Workers\Contracts\WorkerInterface;
+use Raid\Guardian\Matchers\Matcher;
+use Raid\Guardian\Matchers\Contracts\MatcherInterface;
 
-class EmailWorker extends Worker implements WorkerInterface
+class EmailWorker extends Matcher implements MatcherInterface
 {
     public const ATTRIBUTE = '';
 }
@@ -331,10 +331,10 @@ Let's configure the `Worker` class.
 
 namespace App\Http\Authentication\Workers;
 
-use Raid\Guardian\Workers\Worker;
-use Raid\Guardian\Workers\Contracts\WorkerInterface;
+use Raid\Guardian\Matchers\Matcher;
+use Raid\Guardian\Matchers\Contracts\MatcherInterface;
 
-class EmailWorker extends Worker implements WorkerInterface
+class EmailWorker extends Matcher implements MatcherInterface
 {
     public const ATTRIBUTE = 'email';
 }
@@ -366,11 +366,11 @@ Then you can define your `Rules`.
 namespace App\Http\Authentication\Channels;
 
 use App\Http\Authentication\Rules\VerifiedRule;
-use Raid\Guardian\Channels\Channel;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Guardian\Channels\Contracts\ShouldRunRules;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Authenticators\Contracts\ShouldRunNorms;
 
-class SystemChannel extends Channel implements ChannelInterface, ShouldRunRules
+class SystemChannel extends Authenticator implements AuthenticatorInterface, ShouldRunNorms
 {
     public const NAME = 'system';
     
@@ -414,16 +414,16 @@ This will output the following code
 
 namespace App\Http\Authentication\Rules;
 
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Guardian\Rules\Contracts\RuleInterface;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Norms\Contracts\NormInterface;
 
-class VerifiedRule implements RuleInterface
+class VerifiedRule implements NormInterface
 {
-    public function handle(ChannelInterface $channel): bool
+    public function handle(AuthenticatorInterface $channel): bool
     {
     }
 
-    public function fail(ChannelInterface $channel): void
+    public function fail(AuthenticatorInterface $channel): void
     {
     }
 }
@@ -435,17 +435,17 @@ Let's configure the `Rule` class.
 
 namespace App\Http\Authentication\Rules;
 
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Guardian\Rules\Contracts\RuleInterface;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Norms\Contracts\NormInterface;
 
-class VerifiedRule implements RuleInterface
+class VerifiedRule implements NormInterface
 {
-    public function handle(ChannelInterface $channel): bool
+    public function handle(AuthenticatorInterface $channel): bool
     {
         return $channel->getAuthenticatable()->isVerified();
     }
     
-    public function fail(ChannelInterface $channel): void
+    public function fail(AuthenticatorInterface $channel): void
     {
         $channel->fail(message: __('auth.unverified'));
     }
@@ -473,11 +473,11 @@ Then you can define your `Steps`.
 namespace App\Http\Authentication\Channels;
 
 use App\Http\Authentication\Steps\TwoFactorEmailStep;
-use Raid\Guardian\Channels\Channel;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Guardian\Channels\Contracts\ShouldRunSteps;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Authenticators\Contracts\ShouldRunSequences;
 
-class SystemChannel extends Channel implements ChannelInterface, ShouldRunSteps
+class SystemChannel extends Authenticator implements AuthenticatorInterface, ShouldRunSequences
 {
     public const NAME = 'system';
     
@@ -522,12 +522,12 @@ This will output the following code
 
 namespace App\Http\Authentication\Steps;
 
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Guardian\Steps\Contracts\StepInterface;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Sequences\Contracts\SequenceInterface;
 
-class TwoFactorEmailStep implements StepInterface
+class TwoFactorEmailStep implements SequenceInterface
 {
-    public function handle(ChannelInterface $channel): void
+    public function handle(AuthenticatorInterface $channel): void
     {
     }
 }
@@ -542,10 +542,10 @@ namespace App\Http\Authentication\Steps;
 
 use App\Core\Integrations\Mail\MailService;
 use App\Mail\TwoFactorMail;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Guardian\Steps\Contracts\StepInterface;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Sequences\Contracts\SequenceInterface;
 
-class TwoFactorEmailStep implements StepInterface
+class TwoFactorEmailStep implements SequenceInterface
 {
     public function __construct(
         private readonly MailService $mailService,
@@ -553,7 +553,7 @@ class TwoFactorEmailStep implements StepInterface
 
     }
 
-    public function handle(ChannelInterface $channel): void
+    public function handle(AuthenticatorInterface $channel): void
     {
         $code = generate_code();
         
@@ -598,11 +598,11 @@ namespace App\Http\Authentication\Steps;
 
 use App\Mail\TwoFactorMail;
 use App\Core\Integrations\Mail\MailService;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Guardian\Steps\Contracts\StepInterface;
-use Raid\Guardian\Steps\Contracts\ShouldRunQueue;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Sequences\Contracts\SequenceInterface;
+use Raid\Guardian\Sequences\Contracts\QueueSequenceInterface;
 
-class TwoFactorEmailStep implements StepInterface, ShouldRunQueue
+class TwoFactorEmailStep implements SequenceInterface, QueueSequenceInterface
 {
     use HasQueue;
 
@@ -612,7 +612,7 @@ class TwoFactorEmailStep implements StepInterface, ShouldRunQueue
 
     }
 
-    public function handle(ChannelInterface $channel): void
+    public function handle(AuthenticatorInterface $channel): void
     {
         $code = generate_code();
         

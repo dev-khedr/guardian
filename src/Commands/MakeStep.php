@@ -8,7 +8,7 @@ class MakeStep extends MakeCommand
 
     protected $description = 'Make a new step class';
 
-    protected string $type = 'Step';
+    protected string $type = 'Sequence';
 
     protected function getClassPath(): string
     {

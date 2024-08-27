@@ -46,7 +46,7 @@ trait HasChannels
             $this->getConfiguredDefaultChannel();
 
         if (! $authenticatorChannel) {
-            throw new Exception("Channel $channel is not configured for authenticator ".static::class);
+            throw new Exception("Authenticator $channel is not configured for authenticator ".static::class);
         }
 
         return $authenticatorChannel;

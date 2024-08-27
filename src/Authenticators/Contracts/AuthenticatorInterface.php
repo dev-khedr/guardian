@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Raid\Guardian\Authenticators\Contracts;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Authenticates\Contracts\Authenticatable;
+use Raid\Guardian\Errors\Contracts\ErrorsInterface;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
+use Raid\Guardian\Matchers\Contracts\MatcherInterface;
 
 interface AuthenticatorInterface
 {
@@ -14,19 +15,29 @@ interface AuthenticatorInterface
 
     public static function getName(): string;
 
-    public function attempt(array $credentials, ?string $channel = null, ?TokenInterface $token = null): ChannelInterface;
+    public function attempt(Authenticatable $authenticatable, array $credentials, ?TokenInterface $token = null): static;
 
-    public function login(Authenticatable $authenticatable, ?string $channel = null, ?TokenInterface $token = null): ChannelInterface;
+    public function login(Authenticatable $authenticatable, ?TokenInterface $token = null): static;
 
-    public function setAuthenticates(string $authenticates): static;
+    public function getAuthenticatable(?string $key = null, mixed $default = null): mixed;
 
-    public function getAuthenticates(): string;
+    public function isAuthenticated(): bool;
 
-    public function setChannels(array $channels): static;
+    public function getCredentials(?string $key = null, mixed $default = null): mixed;
 
-    public function getChannels(): array;
+    public function errors(): ErrorsInterface;
 
-    public function setDefaultChannel(string $channel): static;
+    public function fail(string $key = 'error', string $message = ''): void;
 
-    public function getDefaultChannel(): string;
+    public function failed(): bool;
+
+    public function getToken(?string $key = null, mixed $default = null): mixed;
+
+    public function getStringToken(): string;
+
+    public function setWorkers(array $workers): static;
+
+    public function getWorkers(): array;
+
+    public function getWorker(): MatcherInterface;
 }

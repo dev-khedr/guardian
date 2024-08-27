@@ -9,8 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
-use Raid\Guardian\Steps\Contracts\StepInterface;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Sequences\Contracts\SequenceInterface;
 
 class StepJob implements ShouldQueue
 {
@@ -20,8 +20,8 @@ class StepJob implements ShouldQueue
     use SerializesModels;
 
     public function __construct(
-        private readonly StepInterface $step,
-        private readonly ChannelInterface $channel,
+        private readonly SequenceInterface      $step,
+        private readonly AuthenticatorInterface $channel,
     ) {
 
     }

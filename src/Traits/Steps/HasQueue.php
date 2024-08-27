@@ -6,7 +6,7 @@ namespace Raid\Guardian\Traits\Steps;
 
 use DateInterval;
 use DateTimeInterface;
-use Raid\Guardian\Channels\Contracts\ChannelInterface;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Jobs\StepJob;
 
 trait HasQueue
@@ -31,7 +31,7 @@ trait HasQueue
         return null;
     }
 
-    public function queue(ChannelInterface $channel): void
+    public function queue(AuthenticatorInterface $channel): void
     {
         $job = $this->getJob()::dispatch($this, $channel);
 
