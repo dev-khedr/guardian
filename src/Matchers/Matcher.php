@@ -24,12 +24,12 @@ abstract class Matcher implements MatcherInterface
         return static::QUERY_ATTRIBUTE;
     }
 
-    protected function getWorkerAttribute(): string
+    protected function getMatcherAttribute(): string
     {
         return static::getQueryAttribute() ?? static::getAttribute();
     }
 
-    protected function getWorkerValue(array $credentials): mixed
+    protected function getMatcherValue(array $credentials): mixed
     {
         return $credentials[static::getAttribute()];
     }
@@ -37,13 +37,13 @@ abstract class Matcher implements MatcherInterface
     public function find(Authenticatable $authenticatable, array $credentials): ?Authenticatable
     {
         return $authenticatable->findForAuthentication(
-            $this->getWorkerAttribute(),
-            $this->getWorkerValue($credentials),
+            $this->getMatcherAttribute(),
+            $this->getMatcherValue($credentials),
         );
     }
 
-    public function fail(AuthenticatorInterface $channel): void
+    public function fail(AuthenticatorInterface $authenticator): void
     {
-        $channel->fail(message: __('auth.failed'));
+        $authenticator->fail(message: __('auth.failed'));
     }
 }

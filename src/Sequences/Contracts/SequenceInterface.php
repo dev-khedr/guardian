@@ -8,5 +8,5 @@ use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
 interface SequenceInterface
 {
-    public function handle(AuthenticatorInterface $channel): void;
+    public function handle(AuthenticatorInterface $authenticator): void;
 }

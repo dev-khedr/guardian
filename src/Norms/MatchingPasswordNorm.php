@@ -8,16 +8,16 @@ use Raid\Guardian\Norms\Contracts\NormInterface;
 
 class MatchingPasswordNorm implements NormInterface
 {
-    public function handle(AuthenticatorInterface $channel): bool
+    public function handle(AuthenticatorInterface $authenticator): bool
     {
         return Hash::check(
-            $channel->getCredentials('password'),
-            $channel->getAuthenticatable()->getAuthPassword(),
+            $authenticator->getCredentials('password'),
+            $authenticator->getAuthenticatable()->getAuthPassword(),
         );
     }
 
-    public function fail(AuthenticatorInterface $channel): void
+    public function fail(AuthenticatorInterface $authenticator): void
     {
-        $channel->fail(message: __('auth.failed'));
+        $authenticator->fail(message: __('auth.failed'));
     }
 }

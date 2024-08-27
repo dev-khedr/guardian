@@ -8,5 +8,5 @@ use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
 interface NormInterface
 {
-    public function handle(AuthenticatorInterface $channel): bool;
+    public function handle(AuthenticatorInterface $authenticator): bool;
 }
