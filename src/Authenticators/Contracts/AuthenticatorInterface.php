@@ -35,9 +35,9 @@ interface AuthenticatorInterface
 
     public function getStringToken(): string;
 
-    public function setWorkers(array $workers): static;
+    public function setMatchers(array $matchers): static;
 
-    public function getWorkers(): array;
+    public function getMatchers(): array;
 
-    public function getWorker(): MatcherInterface;
+    public function getMatcher(): MatcherInterface;
 }

@@ -17,8 +17,8 @@ trait HasCredentials
 
     public function getCredentials(?string $key = null, mixed $default = null): mixed
     {
-        return $key ?
-            Arr::get($this->credentials, $key, $default) :
-            $this->credentials;
+        return $key
+            ? Arr::get($this->credentials, $key, $default)
+            : $this->credentials;
     }
 }

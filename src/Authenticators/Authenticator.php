@@ -12,20 +12,20 @@ use Raid\Guardian\Tokens\Contracts\TokenInterface;
 use Raid\Guardian\Traits\Authenticators\HasAuthenticatable;
 use Raid\Guardian\Traits\Authenticators\HasCredentials;
 use Raid\Guardian\Traits\Authenticators\HasErrors;
-use Raid\Guardian\Traits\Authenticators\HasRules;
-use Raid\Guardian\Traits\Authenticators\HasSteps;
+use Raid\Guardian\Traits\Authenticators\HasNorms;
+use Raid\Guardian\Traits\Authenticators\HasSequences;
 use Raid\Guardian\Traits\Authenticators\HasToken;
-use Raid\Guardian\Traits\Authenticators\HasWorkers;
+use Raid\Guardian\Traits\Authenticators\HasMatchers;
 
 abstract class Authenticator implements AuthenticatorInterface
 {
     use HasAuthenticatable;
     use HasCredentials;
     use HasErrors;
-    use HasRules;
-    use HasSteps;
+    use HasNorms;
+    use HasSequences;
     use HasToken;
-    use HasWorkers;
+    use HasMatchers;
 
     public const NAME = '';
 
@@ -39,28 +39,28 @@ abstract class Authenticator implements AuthenticatorInterface
         return static::NAME;
     }
 
-    public function attempt(Authenticatable $authenticates, array $credentials, ?TokenInterface $token = null): static
+    public function attempt(Authenticatable $authenticatable, array $credentials, ?TokenInterface $token = null): static
     {
         $this->setCredentials($credentials);
 
-        $authenticatable = $this->findAuthenticatable($authenticates, $credentials);
+        $foundAuthenticatable = $this->findAuthenticatable($authenticatable, $credentials);
 
         if ($this->failed()) {
             return $this;
         }
 
-        if ($this instanceof ShouldRunNorms && ! $this->runRules()) {
+        if ($this instanceof ShouldRunNorms && ! $this->runNorms()) {
 
             return $this;
         }
 
         if ($this instanceof ShouldRunSequences) {
-            $this->runSteps();
+            $this->runSequences();
 
             return $this;
         }
 
-        $this->authenticate($authenticatable, $token);
+        $this->authenticate($foundAuthenticatable, $token);
 
         return $this;
     }

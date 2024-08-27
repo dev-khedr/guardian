@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Raid\Guardian\Traits\Authenticators;
 
-use Illuminate\Contracts\Auth\Authenticatable;
+use Raid\Guardian\Authenticates\Contracts\Authenticatable;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
 
 trait HasAuthenticatable
@@ -20,9 +20,10 @@ trait HasAuthenticatable
 
     public function getAuthenticatable(?string $key = null, mixed $default = null): mixed
     {
-        return $key ?
-            $this->authenticatable->{$key} ?? $default :
-            $this->authenticatable;
+        return $key
+            ? $this->authenticatable->{$key}
+            ?? $default
+            : $this->authenticatable;
     }
 
     public function isAuthenticated(): bool
@@ -32,9 +33,9 @@ trait HasAuthenticatable
 
     protected function authenticate(Authenticatable $authenticatable, ?TokenInterface $token = null): void
     {
-        $arguments = $token ?
-            $token->toArray() :
-            ['name' => $authenticatable->getAuthIdentifier()];
+        $arguments = $token
+            ? $token->toArray()
+            : ['name' => $authenticatable->getAuthIdentifier()];
 
         $this->setToken($authenticatable->createToken(...$arguments));
 

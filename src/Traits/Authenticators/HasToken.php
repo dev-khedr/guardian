@@ -17,9 +17,10 @@ trait HasToken
 
     public function getToken(?string $key = null, mixed $default = null): mixed
     {
-        return $key ?
-            $this->token->{$key} ?? $default :
-            $this->token;
+        return $key
+            ? $this->token->{$key}
+            ?? $default
+            : $this->token;
     }
 
     public function getStringToken(): string
