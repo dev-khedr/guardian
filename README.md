@@ -77,13 +77,13 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as IlluminateUser;
-use Raid\Guardian\Authenticates\Contracts\Authenticatable;
+use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
 
-class User extends IlluminateUser implements Authenticatable
+class User extends IlluminateUser implements AuthenticatableInterface
 {
     use HasApiTokens;
 
-    public function findForAuthentication(string $attribute, mixed $value): ?Authenticatable
+    public function findForAuthentication(string $attribute, mixed $value): ?AuthenticatableInterface
     {
         return $this->where($attribute, $value)->first();
     }
