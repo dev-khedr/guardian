@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Sequences\Contracts\SequenceInterface;
 
-class StepJob implements ShouldQueue
+class SequenceJob implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raid\Guardian\Traits\Channels;
+namespace Raid\Guardian\Traits\Authenticators;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Raid\Guardian\Authenticates\Contracts\Authenticatable;

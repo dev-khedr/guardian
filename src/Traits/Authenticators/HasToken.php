@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raid\Guardian\Traits\Channels;
+namespace Raid\Guardian\Traits\Authenticators;
 
 use Laravel\Sanctum\NewAccessToken;
 

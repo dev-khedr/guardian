@@ -9,13 +9,13 @@ use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Authenticators\Contracts\ShouldRunNorms;
 use Raid\Guardian\Authenticators\Contracts\ShouldRunSequences;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
-use Raid\Guardian\Traits\Channels\HasAuthenticatable;
-use Raid\Guardian\Traits\Channels\HasCredentials;
-use Raid\Guardian\Traits\Channels\HasErrors;
-use Raid\Guardian\Traits\Channels\HasRules;
-use Raid\Guardian\Traits\Channels\HasSteps;
-use Raid\Guardian\Traits\Channels\HasToken;
-use Raid\Guardian\Traits\Channels\HasWorkers;
+use Raid\Guardian\Traits\Authenticators\HasAuthenticatable;
+use Raid\Guardian\Traits\Authenticators\HasCredentials;
+use Raid\Guardian\Traits\Authenticators\HasErrors;
+use Raid\Guardian\Traits\Authenticators\HasRules;
+use Raid\Guardian\Traits\Authenticators\HasSteps;
+use Raid\Guardian\Traits\Authenticators\HasToken;
+use Raid\Guardian\Traits\Authenticators\HasWorkers;
 
 abstract class Authenticator implements AuthenticatorInterface
 {
