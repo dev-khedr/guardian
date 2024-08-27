@@ -41,9 +41,9 @@ trait HasAuthenticators
      */
     protected function getAuthenticator(?string $authenticator = null): string
     {
-        $guardianAuthenticator = $authenticator ?
-            $this->getGuardianAuthenticator($authenticator) :
-            $this->getConfiguredDefaultAuthenticator();
+        $guardianAuthenticator = $authenticator
+            ? $this->getGuardianAuthenticator($authenticator)
+            : $this->getConfiguredDefaultAuthenticator();
 
         if (! $guardianAuthenticator) {
             throw new Exception("Authenticator $authenticator is not configured for guardian ".static::class);
@@ -67,15 +67,15 @@ trait HasAuthenticators
 
     protected function getConfiguredAuthenticators(): array
     {
-        return isset($this->authenticators) ?
-            $this->getAuthenticators() :
-            config('guardian.guardian_authenticators.'.static::class, []);
+        return isset($this->authenticators)
+            ? $this->getAuthenticators()
+            : config('guardian.guardian_authenticators.'.static::class, []);
     }
 
     protected function getConfiguredDefaultAuthenticator(): ?string
     {
-        return isset($this->defaultAuthenticator) ?
-            $this->getDefaultAuthenticator() :
-            config('guardian.default_authenticator');
+        return isset($this->defaultAuthenticator)
+            ? $this->getDefaultAuthenticator()
+            : config('guardian.default_authenticator');
     }
 }
