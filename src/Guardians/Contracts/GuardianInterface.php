@@ -14,19 +14,19 @@ interface GuardianInterface
 
     public static function getName(): string;
 
-    public function attempt(array $credentials, ?string $channel = null, ?TokenInterface $token = null): AuthenticatorInterface;
+    public function attempt(array $credentials, ?string $authenticator = null, ?TokenInterface $token = null): AuthenticatorInterface;
 
-    public function login(Authenticatable $authenticatable, ?string $channel = null, ?TokenInterface $token = null): AuthenticatorInterface;
+    public function login(Authenticatable $authenticatable, ?string $authenticator = null, ?TokenInterface $token = null): AuthenticatorInterface;
 
-    public function setAuthenticates(string $authenticates): static;
+    public function setAuthenticatable(string $authenticatable): static;
 
-    public function getAuthenticates(): string;
+    public function getAuthenticatable(): string;
 
-    public function setChannels(array $channels): static;
+    public function setAuthenticators(array $authenticators): static;
 
-    public function getChannels(): array;
+    public function getAuthenticators(): array;
 
-    public function setDefaultChannel(string $channel): static;
+    public function setDefaultAuthenticator(string $authenticator): static;
 
-    public function getDefaultChannel(): string;
+    public function getDefaultAuthenticator(): string;
 }

@@ -9,13 +9,13 @@ use Raid\Guardian\Authenticates\Contracts\Authenticatable;
 use Raid\Guardian\Guardians\Contracts\GuardianInterface;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
-use Raid\Guardian\Traits\Authenticators\HasAuthenticates;
-use Raid\Guardian\Traits\Authenticators\HasChannels;
+use Raid\Guardian\Traits\Guardians\HasAuthenticatable;
+use Raid\Guardian\Traits\Guardians\HasAuthenticators;
 
 class Guardian implements GuardianInterface
 {
-    use HasAuthenticates;
-    use HasChannels;
+    use HasAuthenticatable;
+    use HasAuthenticators;
 
     protected const NAME = '';
 
@@ -32,23 +32,25 @@ class Guardian implements GuardianInterface
     /**
      * @throws Exception
      */
-    public function attempt(array $credentials, ?string $channel = null, ?TokenInterface $token = null): AuthenticatorInterface
+    public function attempt(array $credentials, ?string $authenticator = null, ?TokenInterface $token = null): AuthenticatorInterface
     {
-        return $this->getChannel($channel)::new()->attempt(
-            app($this->getAuthenticates()),
-            $credentials,
-            $token,
-        );
+        return $this->getAuthenticator($authenticator)::new()
+            ->attempt(
+                app($this->getAuthenticatable()),
+                $credentials,
+                $token,
+            );
     }
 
     /**
      * @throws Exception
      */
-    public function login(Authenticatable $authenticatable, ?string $channel = null, ?TokenInterface $token = null): AuthenticatorInterface
+    public function login(Authenticatable $authenticatable, ?string $authenticator = null, ?TokenInterface $token = null): AuthenticatorInterface
     {
-        return $this->getChannel($channel)::new()->login(
-            $authenticatable,
-            $token,
-        );
+        return $this->getAuthenticator($authenticator)::new()
+            ->login(
+                $authenticatable,
+                $token,
+            );
     }
 }

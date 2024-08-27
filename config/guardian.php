@@ -6,22 +6,22 @@ use Raid\Guardian\Matchers\EmailMatcher;
 
 return [
 
-    'default_channel' => DefaultAuthenticator::class,
+    'default_authenticator' => DefaultAuthenticator::class,
 
-    'authenticator_channels' => [],
+    'guardian_authenticators' => [],
 
-    'channel_workers' => [
+    'authenticator_matchers' => [
         DefaultAuthenticator::class => [
             EmailMatcher::class,
         ],
     ],
 
-    'channel_rules' => [
+    'authenticator_norms' => [
         DefaultAuthenticator::class => [
             MatchingPasswordNorm::class,
         ],
     ],
 
-    'channel_steps' => [],
+    'authenticator_sequences' => [],
 
 ];

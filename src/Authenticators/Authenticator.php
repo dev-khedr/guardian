@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Raid\Guardian\Authenticators;
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use Raid\Guardian\Authenticates\Contracts\Authenticatable;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Authenticators\Contracts\ShouldRunNorms;
