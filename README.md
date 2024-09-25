@@ -23,7 +23,7 @@ composer require raid/guardian
 
 ## Configuration
 
-Copy the config file to your own project by running the following command
+Publish the config file to your own project by running the following command
 
 ```bash
 php artisan vendor:publish --provider="Raid\Guardian\Providers\GuardianServiceProvider"
