@@ -11,7 +11,9 @@ interface MatcherInterface
 {
     public static function getAttribute(): string;
 
+    public static function getQueryAttribute(): ?string;
+
     public function find(AuthenticatableInterface $authenticatable, array $credentials): ?AuthenticatableInterface;
 
-    public function fail(AuthenticatorInterface $channel): void;
+    public function fail(AuthenticatorInterface $authenticator): void;
 }

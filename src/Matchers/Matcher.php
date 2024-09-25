@@ -19,7 +19,7 @@ abstract class Matcher implements MatcherInterface
         return static::ATTRIBUTE;
     }
 
-    protected static function getQueryAttribute(): ?string
+    public static function getQueryAttribute(): ?string
     {
         return static::QUERY_ATTRIBUTE;
     }
