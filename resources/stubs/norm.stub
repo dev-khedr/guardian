@@ -1,0 +1,13 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Norms\Contracts\NormInterface;
+
+class $CLASS_NAME$ implements NormInterface
+{
+    public function handle(AuthenticatorInterface $authenticator): bool
+    {
+    }
+}

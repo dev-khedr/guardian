@@ -1,0 +1,11 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Raid\Guardian\Matchers\Matcher;
+use Raid\Guardian\Matchers\Contracts\MatcherInterface;
+
+class $CLASS_NAME$ extends Matcher implements MatcherInterface
+{
+    public const ATTRIBUTE = '';
+}

@@ -1,0 +1,15 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Raid\Guardian\Guardians\Guardian;
+use Raid\Guardian\Guardians\Contracts\GuardianInterface;
+
+class $CLASS_NAME$ extends Guardian implements GuardianInterface
+{
+    public const NAME = '';
+
+    protected string $authenticatable;
+
+    protected array $authenticators = [];
+}
