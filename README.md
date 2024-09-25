@@ -3,12 +3,12 @@
 This package is a wrapper for [Laravel Sanctum](https://github.com/laravel/sanctum) package.
 it introduces new concepts to authentication flow such as:
 
-- [Authenticates](#authenticates)
+- [Authenticatable](#authenticatable)
+- [Guardians](#guardian)
 - [Authenticators](#authenticator)
-- [Channels](#channel)
-- [Workers](#worker)
-- [Rules](#rule)
-- [Steps](#step)
+- [Matchers](#matcher)
+- [Norms](#norm)
+- [Sequences](#sequence)
 
 ## Requirements
 
@@ -36,35 +36,35 @@ Let's see basic usage for authentication with this package.
 ```php
 class LoginController extends Controller
 {
-    public function __invoke(Request $request, UserAuthenticator $authenticator)
+    public function __invoke(Request $request, UserGuardian $guardian)
     {
-        $channel = $authenticator->attempt($request->only([
+        $authenticator = $guardian->attempt($request->only([
             'email', 'password',
         ]));
 
         return response()->json([
-            'channel' => $channel->getName(),
-            'token' => $channel->getStringToken(),
-            'resource' => $channel->getAuthenticatable(),
-            'errors' => $channel->errors()->toArray(),
+            'channel' => $authenticator->getName(),
+            'token' => $authenticator->getStringToken(),
+            'resource' => $authenticator->getAuthenticatable(),
+            'errors' => $authenticator->errors()->toArray(),
         ]);
     }
 }
 ```
 
-The `Authenticator` will handle the authentication process and return a
-`Channel` instance that will contain the authentication information.
+The `Guardian` will handle the authentication process and return a
+`Authenticator` instance that will contain the authentication information.
 
-The `Authenticator` class defines the `Authenticates` class that will be 
-used to find the user, also it defines the `Channels` that can be used to
+The `Guardian` class defines the `Authenticatable` class that will be 
+used to find the user, also it defines the `Authenticators` that can be used to
 authenticate the user.
 
-The `Channel` class depends on `Workers` to find the authenticated user, 
-Then it can run some `Rules` and `Steps` to fulfill the authentication process.
+The `Authenticator` class depends on `Matchers` to find the authenticated user, 
+Then it can run some `Norms` and `Sequences` to fulfill the authentication process.
 
-Let's start digging into the `Authenticates`, `Authenticators` and `Channels` classes.
+Let's start digging into the `Authenticatable`, `Guardian` and `Authenticator` classes.
 
-## Authenticates
+## Authenticatable
 
 The `Authenticates` class will be used to find the user,
 and return `Illuminate\Contracts\Auth\Authenticatable` instance if found.
@@ -98,7 +98,7 @@ The `findForAuthentication` method accepts two parameters: `$attribute` and `$va
 
 The `findForAuthentication` method must return `Illuminate\Contracts\Auth\Authenticatable` instance if found.
 
-## Authenticator
+## Guardian
 
 The `Authenticator` class will be used to define the `Authenticates` class and `Channels` to process authentication with different channels.
 
@@ -205,7 +205,7 @@ class LoginController extends Controller
 }
 ```
 
-## Channel
+## Authenticator
 
 The `Channel` class will be used to handle authentication process using the passed `Authenticates` class and `Credentials`.
 
@@ -298,7 +298,7 @@ return [
 
 This definition allows you to authenticate users with different `Workers` using worker defined attribute.
 
-## Worker
+## Matcher
 
 The `Worker` class will be used to find the authenticated user based on the given credentials.
 
@@ -353,7 +353,7 @@ The `Attribute` is used to match the `Worker` with the given credentials.
 The `Query Attribute` is passed to the `findForAuthentication` method to find the user,
 if not defined, it will use the `Attribute` constant instead.
 
-## Rule
+## Norm
 
 The `Rule` class will be used to validate the authentication.
 
@@ -460,7 +460,7 @@ The `handle` method must return a boolean value.
 
 The `handle` method will be called by the `Channel` to validate the authentication.
 
-## Step
+## Sequence
 
 The `Step` class will be used to add additional steps to the authentication process.
 
@@ -709,7 +709,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 ## Credits
 
-- **[Mohamed Khedr](https://github.com/MohamedKhedr700)**
+- **[Mohamed Khedr](https://github.com/dev-khedr)**
 
 ## Security
 
@@ -718,8 +718,8 @@ instead of using the issue tracker.
 
 ## About Raid
 
-Raid is a PHP framework created by **[Mohamed Khedr](https://github.com/MohamedKhedr700)**,
-and it is maintained by **[Mohamed Khedr](https://github.com/MohamedKhedr700)**.
+Raid is a PHP framework created by **[Mohamed Khedr](https://github.com/dev-khedr)**,
+and it is maintained by **[Mohamed Khedr](https://github.com/dev-khedr)**.
 
 ## Support Raid
 
