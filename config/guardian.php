@@ -1,8 +1,8 @@
 <?php
 
 use Raid\Guardian\Authenticators\DefaultAuthenticator;
-use Raid\Guardian\Norms\MatchingPasswordNorm;
 use Raid\Guardian\Matchers\EmailMatcher;
+use Raid\Guardian\Norms\MatchingPasswordNorm;
 
 return [
 

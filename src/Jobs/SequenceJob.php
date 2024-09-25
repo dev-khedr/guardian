@@ -20,11 +20,9 @@ class SequenceJob implements ShouldQueue
     use SerializesModels;
 
     public function __construct(
-        private readonly SequenceInterface      $step,
+        private readonly SequenceInterface $step,
         private readonly AuthenticatorInterface $channel,
-    ) {
-
-    }
+    ) {}
 
     public function handle(): void
     {

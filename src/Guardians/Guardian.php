@@ -6,8 +6,8 @@ namespace Raid\Guardian\Guardians;
 
 use Exception;
 use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
-use Raid\Guardian\Guardians\Contracts\GuardianInterface;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Guardians\Contracts\GuardianInterface;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
 use Raid\Guardian\Traits\Guardians\HasAuthenticatable;
 use Raid\Guardian\Traits\Guardians\HasAuthenticators;
@@ -21,7 +21,7 @@ class Guardian implements GuardianInterface
 
     public static function new(): static
     {
-        return new static();
+        return new static;
     }
 
     public static function getName(): string
