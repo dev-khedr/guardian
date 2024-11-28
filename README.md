@@ -668,38 +668,6 @@ protected function getDelay(): DateInterval|DateTimeInterface|int|null
 }
 ```
 
-### Authenticator Errors
-
-You can use the `Authenticator` class to handle authentication errors through `errors` method.
-
-You can add errors to an authenticator using these methods:
-
-```php
-$authenticator->fail('key', 'message');
-// or
-$authenticator->errors()->add('key', 'message');
-```
-
-You can check the authenticator errors using these methods:
-
-```php
-$hasErrors = $authenticator->failed();
-//or
-$hasErrors = $authenticator->errors()->any();
-
-$hasError = $authenticator->errors()->has('key');
-
-$errorsByKey = $authenticator->errors()->get('key');
-
-$firstError = $authenticator->errors()->first();
-
-$lastError = $authenticator->errors()->last();
-
-$errorsAsArray = $authenticator->errors()->toArray();
-
-$errorsAsJson = $authenticator->errors()->toJson();
-```
-
 ## Driver
 
 The Driver class is responsible for handling the generation of tokens depending on the authentication package used.
@@ -751,6 +719,38 @@ The `Driver` must implement `DriverInterface`.
 The `Driver` class must define the `generateToken` method.
 
 The `generateToken` method will be called by the `Authenticator` to generate a token.
+
+### Authenticator Errors
+
+You can use the `Authenticator` class to handle authentication errors through `errors` method.
+
+You can add errors to an authenticator using these methods:
+
+```php
+$authenticator->fail('key', 'message');
+// or
+$authenticator->errors()->add('key', 'message');
+```
+
+You can check the authenticator errors using these methods:
+
+```php
+$hasErrors = $authenticator->failed();
+//or
+$hasErrors = $authenticator->errors()->any();
+
+$hasError = $authenticator->errors()->has('key');
+
+$errorsByKey = $authenticator->errors()->get('key');
+
+$firstError = $authenticator->errors()->first();
+
+$lastError = $authenticator->errors()->last();
+
+$errorsAsArray = $authenticator->errors()->toArray();
+
+$errorsAsJson = $authenticator->errors()->toJson();
+```
 
 And that's it.
 
