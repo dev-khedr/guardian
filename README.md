@@ -13,7 +13,6 @@ it introduces new concepts to authentication flow such as:
 ## Requirements
 
 - `php >= 8.2`
-- `laravel/sanctum >= 4.0`
 
 ## Installation
 
