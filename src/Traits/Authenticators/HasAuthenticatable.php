@@ -35,7 +35,7 @@ trait HasAuthenticatable
     {
         $arguments = $token
             ? $token->toArray()
-            : ['name' => $authenticatable->getAuthIdentifier()];
+            : ['name' => (string) $authenticatable->getAuthIdentifier()];
 
         $this->setToken($authenticatable->createToken(...$arguments));
 

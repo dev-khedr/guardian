@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Raid\Guardian\Traits\Authenticators;
 
+use Illuminate\Support\Arr;
 use Laravel\Sanctum\NewAccessToken;
 
 trait HasToken
@@ -18,8 +19,7 @@ trait HasToken
     public function getToken(?string $key = null, mixed $default = null): mixed
     {
         return $key
-            ? $this->token->{$key}
-            ?? $default
+            ? (Arr::get($this->token->toArray(), $key, $default))
             : $this->token;
     }
 

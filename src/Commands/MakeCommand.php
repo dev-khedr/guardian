@@ -94,6 +94,6 @@ abstract class MakeCommand extends Command
             return;
         }
 
-        mkdir($path, 0777, true, true);
+        mkdir($path, 0777, true);
     }
 }
