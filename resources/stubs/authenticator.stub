@@ -8,8 +8,4 @@ use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 class $CLASS_NAME$ extends Authenticator implements AuthenticatorInterface
 {
     public const NAME = '';
-
-    protected string $authenticates = '';
-
-    protected array $channels = [];
 }

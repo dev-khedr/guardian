@@ -3,12 +3,12 @@
 This package is a wrapper for [Laravel Sanctum](https://github.com/laravel/sanctum) package.
 it introduces new concepts to authentication flow such as:
 
-- [Authenticates](#authenticates)
+- [Authenticatable](#authenticatable)
+- [Guardians](#guardian)
 - [Authenticators](#authenticator)
-- [Channels](#channel)
-- [Workers](#worker)
-- [Rules](#rule)
-- [Steps](#step)
+- [Matchers](#matcher)
+- [Norms](#norm)
+- [Sequences](#sequence)
 
 ## Requirements
 
@@ -23,7 +23,7 @@ composer require raid/guardian
 
 ## Configuration
 
-Copy the config file to your own project by running the following command
+Publish the config file to your own project by running the following command
 
 ```bash
 php artisan vendor:publish --provider="Raid\Guardian\Providers\GuardianServiceProvider"
@@ -36,35 +36,35 @@ Let's see basic usage for authentication with this package.
 ```php
 class LoginController extends Controller
 {
-    public function __invoke(Request $request, UserAuthenticator $authenticator)
+    public function __invoke(Request $request, UserGuardian $guardian)
     {
-        $channel = $authenticator->attempt($request->only([
+        $authenticator = $guardian->attempt($request->only([
             'email', 'password',
         ]));
 
         return response()->json([
-            'channel' => $channel->getName(),
-            'token' => $channel->getStringToken(),
-            'resource' => $channel->getAuthenticatable(),
-            'errors' => $channel->errors()->toArray(),
+            'authenticator' => $authenticator->getName(),
+            'token' => $authenticator->getStringToken(),
+            'resource' => $authenticator->getAuthenticatable(),
+            'errors' => $authenticator->errors()->toArray(),
         ]);
     }
 }
 ```
 
-The `Authenticator` will handle the authentication process and return a
-`Channel` instance that will contain the authentication information.
+The `Guardian` will handle the authentication process and return a
+`Authenticator` instance that will contain the authentication information.
 
-The `Authenticator` class defines the `Authenticates` class that will be 
-used to find the user, also it defines the `Channels` that can be used to
+The `Guardian` class defines the `Authenticatable` class that will be 
+used to find the user, also it defines the `Authenticators` that can be used to
 authenticate the user.
 
-The `Channel` class depends on `Workers` to find the authenticated user, 
-Then it can run some `Rules` and `Steps` to fulfill the authentication process.
+The `Authenticator` class depends on `Matchers` to find the authenticated user, 
+Then it can run some `Norms` and `Sequences` to fulfill the authentication process.
 
-Let's start digging into the `Authenticates`, `Authenticators` and `Channels` classes.
+Let's start digging into the `Authenticatable`, `Guardian` and `Authenticator` classes.
 
-## Authenticates
+## Authenticatable
 
 The `Authenticates` class will be used to find the user,
 and return `Illuminate\Contracts\Auth\Authenticatable` instance if found.
@@ -90,22 +90,129 @@ class User extends IlluminateUser implements AuthenticatableInterface
 }
 ```
 
-The `Authenticates` class must implement `Authenticates` interface.
+The `Authenticatable` class must implement `AuthenticatableInterface` interface.
 
-The `Authenticates` class must define the `findForAuthentication` method.
+The `Authenticatable` class must define the `findForAuthentication` method.
 
 The `findForAuthentication` method accepts two parameters: `$attribute` and `$value` passed from the given credentials.
 
 The `findForAuthentication` method must return `Illuminate\Contracts\Auth\Authenticatable` instance if found.
 
+## Guardian
+
+The `Guardian` class will be used to define the `Authenticatable` class and `Authenticators` to process authentication with different flow.
+
+You can use this command to create a new guardian class
+
+```bash
+php artisan raid:make-guardian UserGuardian
+```
+
+This will output the following code
+
+```php
+<?php
+
+namespace App\Http\Authentication\Guardians;
+
+use Raid\Guardian\Guardians\Guardian;
+use Raid\Guardian\Guardians\Contracts\GuardianInterface;
+
+class UserGuardian extends Guardian implements GuardianInterface
+{
+    public const NAME = '';
+
+    protected string $authenticatable;
+
+    protected array $authenticators = [];
+}
+```
+
+Let's configure the `Guardian` class.
+
+```php
+<?php
+
+namespace App\Http\Authentication\Guardians;
+
+use App\Models\User;
+use App\Http\Authentication\Guardians\SystemAuthenticator;
+use Raid\Guardian\Guardians\Guardian;
+use Raid\Guardian\Guardians\Contracts\GuardianInterface;
+
+class UserGuardian extends Guardian implements GuardianInterface
+{
+    public const NAME = 'user';
+
+    protected string $authenticatable = User::class;
+
+    protected array $authenticators = [
+        SystemAuthenticator::class,
+    ];
+}
+```
+
+The `Guardian` class must implement `GuardianInterface`.
+
+The `Guardian` class must extend the `Guardian` class.
+
+The `Guardian` class should define the `name` constant.
+
+The `Guardian` class must define the `authenticatable` property.
+
+The `Guardian` class should define the `authenticators` property.
+
+The `Guardian` class can handle authentication with any of its defined `authenticators`.
+
+You can define the `authenticators` with two ways:
+
+- `authenticators` property
+- `config\authentication.php` file
+
+```php
+<?php
+
+use App\Http\Authentication\Guardians\UserGuardian;
+use App\Http\Authentication\Authenticators\SystemAuthenticator;
+
+return [
+
+    'guardian_authenticators' => [
+        UserGuardian::class => [
+            SystemAuthenticator::class,
+        ],
+    ],
+];
+```
+
+This definition allows you to authenticate users with different `Authenticators` using authenticator name.
+
+If you didn't pass any authenticator, the default authenticator will be used.
+
+```php
+<?php
+
+class LoginController extends Controller
+{
+    public function __invoke(Request $request, UserGuardian $guardian)
+    {
+        $credentials = $request->only([
+            'email', 'password',
+        ]);
+        
+        $authenticator = $guardian->attempt($credentials, 'system');
+    }
+}
+```
+
 ## Authenticator
 
-The `Authenticator` class will be used to define the `Authenticates` class and `Channels` to process authentication with different channels.
+The `Authenticator` class will be used to handle authentication process using the passed `Authenticatable` class and `Credentials`.
 
 You can use this command to create a new authenticator class
 
 ```bash
-php artisan raid:make-authenticator UserAuthenticator
+php artisan raid:make-authenticator SystemAuthenticator
 ```
 
 This will output the following code
@@ -115,16 +222,12 @@ This will output the following code
 
 namespace App\Http\Authentication\Authenticators;
 
-use Raid\Guardian\Guardians\Guardian;
-use Raid\Guardian\Guardians\Contracts\GuardianInterface;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
-class UserAuthenticator extends Guardian implements GuardianInterface
+class SystemAuthenticator extends Authenticator implements AuthenticatorInterface
 {
     public const NAME = '';
-
-    protected string $authenticates = '';
-
-    protected array $channels = [];
 }
 ```
 
@@ -135,20 +238,12 @@ Let's configure the `Authenticator` class.
 
 namespace App\Http\Authentication\Authenticators;
 
-use App\Models\User;
-use App\Http\Authentication\Channels\SystemChannel;
-use Raid\Guardian\Guardians\Guardian;
-use Raid\Guardian\Guardians\Contracts\GuardianInterface;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
-class UserAuthenticator extends Guardian implements GuardianInterface
+class SystemAuthenticator extends Authenticator implements AuthenticatorInterface
 {
-    public const NAME = 'user';
-
-    protected string $authenticates = User::class;
-
-    protected array $channels = [
-        SystemChannel::class,
-    ];
+    public const NAME = 'system';
 }
 ```
 
@@ -158,154 +253,59 @@ The `Authenticator` class must extend the `Authenticator` class.
 
 The `Authenticator` class should define the `name` constant.
 
-The `Authenticator` class must define the `authenticates` property.
-
-The `Authenticator` class should define the `channels` property.
-
-The `Authenticator` class can handle authentication with any of its defined `Channels`.
-
-You can define the `channels` with two ways:
-
-- `channels` property
-- `config\authentication.php` file
+The `Authenticator` works through `Matchers` to find the authenticated user,
+It matches the defined `Matchers` attribute with the given credentials.
 
 ```php
 <?php
 
-use App\Http\Authentication\Authenticators\UserAuthenticator;
-use App\Http\Authentication\Channels\SystemChannel;
+namespace App\Http\Authentication\Authenticators;
 
-return [
-
-    'authenticator_channels' => [
-        UserAuthenticator::class => [
-            SystemChannel::class,
-        ],
-    ],
-];
-```
-
-This definition allows you to authenticate users with different `Channels` using channel name.
-
-If you didn't pass any channel, the default channel will be used.
-
-```php
-<?php
-
-class LoginController extends Controller
-{
-    public function __invoke(Request $request, UserAuthenticator $authenticator)
-    {
-        $credentials = $request->only([
-            'email', 'password',
-        ]);
-        
-        $channel = $authenticator->attempt($credentials, 'system');
-    }
-}
-```
-
-## Channel
-
-The `Channel` class will be used to handle authentication process using the passed `Authenticates` class and `Credentials`.
-
-You can use this command to create a new channel class
-
-```bash
-php artisan raid:make-channel SystemChannel
-```
-
-This will output the following code
-
-```php
-<?php
-
-namespace App\Http\Authentication\Channels;
-
+use App\Http\Authentication\Matchers\EmailMatcher;
 use Raid\Guardian\Authenticators\Authenticator;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 
-class SystemChannel extends Authenticator implements AuthenticatorInterface
-{
-    public const NAME = '';
-}
-```
-
-Let's configure the `Channel` class.
-
-```php
-<?php
-
-namespace App\Http\Authentication\Channels;
-
-use Raid\Guardian\Authenticators\Authenticator;
-use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
-
-class SystemChannel extends Authenticator implements AuthenticatorInterface
-{
-    public const NAME = 'system';
-}
-```
-
-The `Channel` class must implement `ChannelInterface`.
-
-The `Channel` class must extend the `Channel` class.
-
-The `Channel` class should define the `name` constant.
-
-The `Channel` works through `Workers` to find the authenticated user,
-It matches the defined `Workers` attribute with the given credentials.
-
-```php
-<?php
-
-namespace App\Http\Authentication\Channels;
-
-use App\Http\Authentication\Workers\EmailWorker;
-use Raid\Guardian\Authenticators\Authenticator;
-use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
-
-class SystemChannel extends Authenticator implements AuthenticatorInterface
+class SystemAuthenticator extends Authenticator implements AuthenticatorInterface
 {
     public const NAME = 'system';
     
-    protected array $workers = [
-        EmailWorker::class,
+    protected array $matchers = [
+        EmailMatcher::class,
     ];
 }
 ```
 
-You can define the `workers` with two ways:
+You can define the `matchers` with two ways:
 
-- `workers` property
+- `matchers` property
 - `config\authentication.php` file
 
 ```php
 <?php
 
-use App\Http\Authentication\Channels\SystemChannel;
-use App\Http\Authentication\Workers\EmailWorker;
+use App\Http\Authentication\Authenticators\SystemAuthenticator;
+use App\Http\Authentication\Matchers\EmailMatcher;
 
 return [
 
-    'channel_workers' => [
-        SystemChannel::class => [
-            EmailWorker::class,
+    'authenticator_matchers' => [
+        SystemAuthenticator::class => [
+            EmailMatcher::class,
         ],
     ],
 ];
 ```
 
-This definition allows you to authenticate users with different `Workers` using worker defined attribute.
+This definition allows you to authenticate users with different `Matchers` using the defined attribute.
 
-## Worker
+## Matcher
 
-The `Worker` class will be used to find the authenticated user based on the given credentials.
+The `Matcher` class will be used to find the authenticated user based on the given credentials.
 
-You can use this command to create a new worker class
+You can use this command to create a new matcher class
 
 ```bash
-php artisan raid:make-worker EmailMatcher
+php artisan raid:make-matcher EmailMatcher
 ```
 
 This will output the following code
@@ -313,98 +313,98 @@ This will output the following code
 ```php
 <?php
 
-namespace App\Http\Authentication\Workers;
+namespace App\Http\Authentication\Matchers;
 
 use Raid\Guardian\Matchers\Matcher;
 use Raid\Guardian\Matchers\Contracts\MatcherInterface;
 
-class EmailWorker extends Matcher implements MatcherInterface
+class EmailMatcher extends Matcher implements MatcherInterface
 {
     public const ATTRIBUTE = '';
 }
 ```
 
-Let's configure the `Worker` class.
+Let's configure the `Matcher` class.
 
 ```php
 <?php
 
-namespace App\Http\Authentication\Workers;
+namespace App\Http\Authentication\Matchers;
 
 use Raid\Guardian\Matchers\Matcher;
 use Raid\Guardian\Matchers\Contracts\MatcherInterface;
 
-class EmailWorker extends Matcher implements MatcherInterface
+class EmailMatcher extends Matcher implements MatcherInterface
 {
     public const ATTRIBUTE = 'email';
 }
 ```
 
-The `Worker` class must implement `WorkerInterface`.
+The `Matcher` class must implement `MatcherInterface`.
 
-The `Worker` class must extend the `Worker` class.
+The `Matcher` class must extend the `Matcher` class.
 
-The `Worker` class must define the `attribute` constant.
+The `Matcher` class must define the `ATTRIBUTE` constant.
 
-The `Worker` can also define a `QUERY_ATTRIBUTE` constant to find the user.
+The `Matcher` can also define a `QUERY_ATTRIBUTE` constant to find the user.
 
-The `Attribute` is used to match the `Worker` with the given credentials.
+The `ATTRIBUTE` is used to match the `Matcher` with the given credentials.
 
-The `Query Attribute` is passed to the `findForAuthentication` method to find the user,
-if not defined, it will use the `Attribute` constant instead.
+The `QUERY_ATTRIBUTE` is passed to the `findForAuthentication` method to find the user,
+if not defined, it will use the `ATTRIBUTE` constant instead.
 
-## Rule
+## Norm
 
-The `Rule` class will be used to validate the authentication.
+The `Norm` class will be used to validate the authentication.
 
-To apply `Rules` you need to implement `ShouldRunRules` interface to the `Channel`,
-Then you can define your `Rules`.
+To apply `Norms` you need to implement `ShouldRunNorms` interface to the `Authenticator` class,
+Then you can define your `Norms`.
 
 ```php
 <?php
 
-namespace App\Http\Authentication\Channels;
+namespace App\Http\Authentication\Authenticators;
 
-use App\Http\Authentication\Rules\VerifiedRule;
+use App\Http\Authentication\Norms\VerifiedNorm;
 use Raid\Guardian\Authenticators\Authenticator;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Authenticators\Contracts\ShouldRunNorms;
 
-class SystemChannel extends Authenticator implements AuthenticatorInterface, ShouldRunNorms
+class SystemAuthenticator extends Authenticator implements AuthenticatorInterface, ShouldRunNorms
 {
     public const NAME = 'system';
     
-    protected array $rules = [
-        VerifiedRule::class,    
+    protected array $norms = [
+        VerifiedNorm::class,    
     ];
 }
 ```
 
-You can define the `rules` with two ways:
+You can define the `norms` with two ways:
 
-- `rules` property
+- `norms` property
 - `config\authentication.php` file
 
 ```php
 
-use App\Http\Authentication\Channels\SystemChannel;
-use App\Http\Authentication\Rules\VerifiedRule;
+use App\Http\Authentication\Authenticators\SystemAuthenticator;
+use App\Http\Authentication\Norms\VerifiedNorm;
 
 return [
    
-    'channel_rules' => [
-        SystemChannel::class => [
-            VerifiedRule::class,
+    'authenticators_norms' => [
+        SystemAuthenticator::class => [
+            VerifiedNorm::class,
       ],
 ];
 ```
 
-The `Rules` will be applied to the `Channel` to validate the authentication.
+The `Norms` will be applied to the `Authenticator` to validate the authentication.
 
 You can use this command to create a new rule class
 
 ```bash
-php artisan raid:make-rule VerifiedRule
+php artisan raid:make-norm VerifiedNorm
 ```
 
 This will output the following code
@@ -412,107 +412,107 @@ This will output the following code
 ```php
 <?php
 
-namespace App\Http\Authentication\Rules;
+namespace App\Http\Authentication\Norms;
 
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Norms\Contracts\NormInterface;
 
-class VerifiedRule implements NormInterface
+class VerifiedNorm implements NormInterface
 {
-    public function handle(AuthenticatorInterface $channel): bool
+    public function handle(AuthenticatorInterface $authenticator): bool
     {
     }
 
-    public function fail(AuthenticatorInterface $channel): void
+    public function fail(AuthenticatorInterface $authenticator): void
     {
     }
 }
 ```
-Let's configure the `Rule` class.
+Let's configure the `Norm` class.
 
 ```php
 <?php
 
-namespace App\Http\Authentication\Rules;
+namespace App\Http\Authentication\Norms;
 
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Norms\Contracts\NormInterface;
 
-class VerifiedRule implements NormInterface
+class VerifiedNorm implements NormInterface
 {
-    public function handle(AuthenticatorInterface $channel): bool
+    public function handle(AuthenticatorInterface $authenticator): bool
     {
         return $channel->getAuthenticatable()->isVerified();
     }
     
-    public function fail(AuthenticatorInterface $channel): void
+    public function fail(AuthenticatorInterface $authenticator): void
     {
         $channel->fail(message: __('auth.unverified'));
     }
 }
 ```
 
-The `Rule` class must implement `RuleInterface`.
+The `Norm` class must implement `NormInterface`.
 
-The `Rule` class must define the `handle` method.
+The `Norm` class must define the `handle` method.
 
 The `handle` method must return a boolean value.
 
-The `handle` method will be called by the `Channel` to validate the authentication.
+The `handle` method will be called by the `Authenticator` to validate the authentication.
 
-## Step
+## Sequence
 
-The `Step` class will be used to add additional steps to the authentication process.
+The `Sequence` class will be used to add additional steps to the authentication process.
 
-To apply `Steps` you need to implement `ShouldRunSteps` interface to the `Channel`,
-Then you can define your `Steps`.
+To apply `Sequences` you need to implement `ShouldRunSequences` interface to the `Authenticator` class,
+Then you can define your `Sequences`.
 
 ```php
 <?php
 
-namespace App\Http\Authentication\Channels;
+namespace App\Http\Authentication\Authenticators;
 
-use App\Http\Authentication\Steps\TwoFactorEmailStep;
+use App\Http\Authentication\Sequences\TwoFactorEmailSequence;
 use Raid\Guardian\Authenticators\Authenticator;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Authenticators\Contracts\ShouldRunSequences;
 
-class SystemChannel extends Authenticator implements AuthenticatorInterface, ShouldRunSequences
+class SystemAuthenticator extends Authenticator implements AuthenticatorInterface, ShouldRunSequences
 {
     public const NAME = 'system';
     
-    protected array $steps = [
-        TwoFactorEmailStep::class,
+    protected array $sequences = [
+        TwoFactorEmailSequence::class,
     ],
 }
 ```
 
-You can define the `steps` with two ways:
+You can define the `sequences` with two ways:
 
-- `steps` property
+- `sequences` property
 - `config\authentication.php` file
 
 ```php
 <?php
 
-use App\Http\Authentication\Channels\SystemChannel;
-use App\Http\Authentication\Steps\TwoFactorEmailStep;
+use App\Http\Authentication\Authenticators\SystemAuthenticator;
+use App\Http\Authentication\Sequences\TwoFactorEmailSequence;
 
 return [
    
-    'channel_steps' => [
-        SystemChannel::class => [
-            TwoFactorEmailStep::class,
+    'authenticators_sequences' => [
+        SystemAuthenticator::class => [
+            TwoFactorEmailSequence::class,
       ],
 ];
 ```
 
-The `Steps` will be applied to the `Channel` to add additional steps to the authentication process.
+The `Sequences` will be applied to the `Authenticator` to add additional sequences to the authentication process.
 
 You can use this command to create a new step class
 
 ```bash
-php artisan raid:make-step TwoFactorEmailStep
+php artisan raid:make-sequence TwoFactorEmailSequence
 ```
 
 This will output the following code
@@ -520,25 +520,25 @@ This will output the following code
 ```php
 <?php
 
-namespace App\Http\Authentication\Steps;
+namespace App\Http\Authentication\Sequences;
 
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Sequences\Contracts\SequenceInterface;
 
-class TwoFactorEmailStep implements SequenceInterface
+class TwoFactorEmailSequence implements SequenceInterface
 {
-    public function handle(AuthenticatorInterface $channel): void
+    public function handle(AuthenticatorInterface $authenticator): void
     {
     }
 }
 ```
 
-Let's configure the `Step` class.
+Let's configure the `Sequence` class.
 
 ```php
 <?php
 
-namespace App\Http\Authentication\Steps;
+namespace App\Http\Authentication\Sequences;
 
 use App\Core\Integrations\Mail\MailService;
 use App\Mail\TwoFactorMail;
@@ -553,11 +553,11 @@ class TwoFactorEmailStep implements SequenceInterface
 
     }
 
-    public function handle(AuthenticatorInterface $channel): void
+    public function handle(AuthenticatorInterface $authenticator): void
     {
         $code = generate_code();
         
-        $authenticatable = $channel->getAuthenticatable();
+        $authenticatable = $authenticator->getAuthenticatable();
 
         $authenticatable->update([
             'two_factor_email_code' => $code,
@@ -580,29 +580,28 @@ class TwoFactorEmailStep implements SequenceInterface
 }
 ```
 
-The `Step` must implement `StepInterface`.
+The `Sequence` must implement `SequenceInterface`.
 
-The `Step` class must define the `handle` method.
+The `Sequence` class must define the `handle` method.
 
-The `handle` method will be called by the `Channel` to add additional steps to the authentication process.
+The `handle` method will be called by the `Authenticator` to add additional sequences to the authentication process.
 
-`hint:` Running any steps means that the `Channel` will stop the authentication process without issuing any tokens,
+`hint:` Running any steps means that the `Authenticator` will stop the authentication process without issuing any tokens,
 This approach can be used in `Multi-Factor` authentication.
 
-You can configure your step class to work through queues.
+You can configure your sequence class to work through queues.
 
 ```php
 <?php
 
-namespace App\Http\Authentication\Steps;
+namespace App\Http\Authentication\Sequences;
 
 use App\Mail\TwoFactorMail;
 use App\Core\Integrations\Mail\MailService;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
-use Raid\Guardian\Sequences\Contracts\SequenceInterface;
 use Raid\Guardian\Sequences\Contracts\QueueSequenceInterface;
 
-class TwoFactorEmailStep implements SequenceInterface, QueueSequenceInterface
+class TwoFactorEmailSequence implements QueueSequenceInterface
 {
     use HasQueue;
 
@@ -612,11 +611,11 @@ class TwoFactorEmailStep implements SequenceInterface, QueueSequenceInterface
 
     }
 
-    public function handle(AuthenticatorInterface $channel): void
+    public function handle(AuthenticatorInterface $authenticator): void
     {
         $code = generate_code();
         
-        $authenticatable = $channel->getAuthenticatable();
+        $authenticatable = $authenticator->getAuthenticatable();
 
         $authenticatable->update([
             'two_factor_email_code' => $code,
@@ -639,9 +638,9 @@ class TwoFactorEmailStep implements SequenceInterface, QueueSequenceInterface
 }
 ```
 
-The queue step must implement `ShouldRunQueue`
+The queue sequence must implement `QueueSequenceInterface`.
 
-The `ShouldRunQueue` class must define the `queue` method.
+The queue sequence class must define the `queue` method.
 
 You can use the `HasQueue` trait to define the `queue` method with its default configuration.
 
@@ -669,36 +668,36 @@ protected function getDelay(): DateInterval|DateTimeInterface|int|null
 }
 ```
 
-### Channel Errors
+### Authenticator Errors
 
-You can use the `Channel` class to handle authentication errors through `errors` method.
+You can use the `Authenticator` class to handle authentication errors through `errors` method.
 
-You can add errors to channel using these methods:
+You can add errors to an authenticator using these methods:
 
 ```php
-$channel->fail('key', 'message');
+$authenticator->fail('key', 'message');
 // or
-$channel->errors()->add('key', 'message');
+$authenticator->errors()->add('key', 'message');
 ```
 
-You can check the channel errors using these methods:
+You can check the authenticator errors using these methods:
 
 ```php
-$hasErrors = $channel->failed();
+$hasErrors = $authenticator->failed();
 //or
-$hasErrors = $channel->errors()->any();
+$hasErrors = $authenticator->errors()->any();
 
-$hasError = $channel->errors()->has('key');
+$hasError = $authenticator->errors()->has('key');
 
-$errorsByKey = $channel->errors()->get('key');
+$errorsByKey = $authenticator->errors()->get('key');
 
-$firstError = $channel->errors()->first();
+$firstError = $authenticator->errors()->first();
 
-$lastError = $channel->errors()->last();
+$lastError = $authenticator->errors()->last();
 
-$errorsAsArray = $channel->errors()->toArray();
+$errorsAsArray = $authenticator->errors()->toArray();
 
-$errorsAsJson = $channel->errors()->toJson();
+$errorsAsJson = $authenticator->errors()->toJson();
 ```
 
 And that's it.
@@ -709,7 +708,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 ## Credits
 
-- **[Mohamed Khedr](https://github.com/MohamedKhedr700)**
+- **[Mohamed Khedr](https://github.com/dev-khedr)**
 
 ## Security
 
@@ -718,8 +717,8 @@ instead of using the issue tracker.
 
 ## About Raid
 
-Raid is a PHP framework created by **[Mohamed Khedr](https://github.com/MohamedKhedr700)**,
-and it is maintained by **[Mohamed Khedr](https://github.com/MohamedKhedr700)**.
+Raid is a PHP framework created by **[Mohamed Khedr](https://github.com/dev-khedr)**,
+and it is maintained by **[Mohamed Khedr](https://github.com/dev-khedr)**.
 
 ## Support Raid
 

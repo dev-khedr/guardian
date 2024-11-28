@@ -12,26 +12,26 @@ use Raid\Guardian\Tokens\Contracts\TokenInterface;
 use Raid\Guardian\Traits\Authenticators\HasAuthenticatable;
 use Raid\Guardian\Traits\Authenticators\HasCredentials;
 use Raid\Guardian\Traits\Authenticators\HasErrors;
+use Raid\Guardian\Traits\Authenticators\HasMatchers;
 use Raid\Guardian\Traits\Authenticators\HasNorms;
 use Raid\Guardian\Traits\Authenticators\HasSequences;
 use Raid\Guardian\Traits\Authenticators\HasToken;
-use Raid\Guardian\Traits\Authenticators\HasMatchers;
 
 abstract class Authenticator implements AuthenticatorInterface
 {
     use HasAuthenticatable;
     use HasCredentials;
     use HasErrors;
+    use HasMatchers;
     use HasNorms;
     use HasSequences;
     use HasToken;
-    use HasMatchers;
 
     public const NAME = '';
 
     public static function new(): static
     {
-        return new static();
+        return new static;
     }
 
     public static function getName(): string

@@ -13,9 +13,7 @@ class Token implements TokenInterface
         protected string $name = '',
         protected array $abilities = ['*'],
         protected ?DateTimeInterface $expiresAt = null,
-    ) {
-
-    }
+    ) {}
 
     public static function new(string $name = '', array $abilities = ['*'], ?DateTimeInterface $expiresAt = null): static
     {

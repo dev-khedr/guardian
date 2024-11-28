@@ -6,6 +6,4 @@ namespace Raid\Guardian\Norms;
 
 use Raid\Guardian\Norms\Contracts\NormInterface;
 
-abstract class Norm implements NormInterface
-{
-}
+abstract class Norm implements NormInterface {}

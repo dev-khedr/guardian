@@ -6,8 +6,8 @@ namespace Raid\Guardian\Authenticators\Contracts;
 
 use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
 use Raid\Guardian\Errors\Contracts\ErrorsInterface;
-use Raid\Guardian\Tokens\Contracts\TokenInterface;
 use Raid\Guardian\Matchers\Contracts\MatcherInterface;
+use Raid\Guardian\Tokens\Contracts\TokenInterface;
 
 interface AuthenticatorInterface
 {

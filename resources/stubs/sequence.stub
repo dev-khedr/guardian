@@ -1,0 +1,13 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+use Raid\Guardian\Sequences\Contracts\SequenceInterface;
+
+class $CLASS_NAME$ implements SequenceInterface
+{
+    public function handle(AuthenticatorInterface $authenticator): void
+    {
+    }
+}

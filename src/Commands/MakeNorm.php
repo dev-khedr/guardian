@@ -2,28 +2,28 @@
 
 namespace Raid\Guardian\Commands;
 
-class MakeRule extends MakeCommand
+class MakeNorm extends MakeCommand
 {
-    protected $signature = 'raid:make-rule {className}';
+    protected $signature = 'raid:make-norm {className}';
 
-    protected $description = 'Make a new rule class';
+    protected $description = 'Make a new norm class';
 
     protected string $type = 'Norm';
 
     protected function getClassPath(): string
     {
-        return parent::getClassPath().'/Rules/'.$this->getClassName().'.php';
+        return parent::getClassPath().'/Norms/'.$this->getClassName().'.php';
     }
 
     protected function getStubPath(): string
     {
-        return parent::getStubPath().'/rule.stub';
+        return parent::getStubPath().'/norm.stub';
     }
 
     protected function getStubVariables(): array
     {
         return [
-            'NAMESPACE' => parent::getNameSpace().'\\Rules',
+            'NAMESPACE' => parent::getNameSpace().'\\Norms',
             'CLASS_NAME' => $this->getClassName(),
         ];
     }

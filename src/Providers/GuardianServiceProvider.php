@@ -6,10 +6,10 @@ namespace Raid\Guardian\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Raid\Guardian\Commands\MakeAuthenticator;
-use Raid\Guardian\Commands\MakeChannel;
-use Raid\Guardian\Commands\MakeRule;
-use Raid\Guardian\Commands\MakeStep;
-use Raid\Guardian\Commands\MakeWorker;
+use Raid\Guardian\Commands\MakeGuardian;
+use Raid\Guardian\Commands\MakeMatcher;
+use Raid\Guardian\Commands\MakeNorm;
+use Raid\Guardian\Commands\MakeSequence;
 use Raid\Guardian\Traits\Providers\HasResolver;
 
 class GuardianServiceProvider extends ServiceProvider
@@ -17,11 +17,11 @@ class GuardianServiceProvider extends ServiceProvider
     use HasResolver;
 
     protected array $commands = [
+        MakeGuardian::class,
         MakeAuthenticator::class,
-        MakeChannel::class,
-        MakeRule::class,
-        MakeStep::class,
-        MakeWorker::class,
+        MakeNorm::class,
+        MakeSequence::class,
+        MakeMatcher::class,
     ];
 
     public function register(): void
