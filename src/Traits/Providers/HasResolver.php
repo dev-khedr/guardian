@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Raid\Guardian\Traits\Providers;
 
+use Raid\Guardian\Drivers\Contracts\DriverInterface;
+
 trait HasResolver
 {
     protected function registerConfig(): void
@@ -23,5 +25,10 @@ trait HasResolver
     protected function registerCommands(): void
     {
         $this->commands($this->commands);
+    }
+
+    protected function registerDriver(): void
+    {
+        $this->app->bind(DriverInterface::class, config('guardian.default_driver'));
     }
 }

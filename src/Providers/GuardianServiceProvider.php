@@ -17,11 +17,11 @@ class GuardianServiceProvider extends ServiceProvider
     use HasResolver;
 
     protected array $commands = [
-        MakeGuardian::class,
         MakeAuthenticator::class,
+        MakeGuardian::class,
+        MakeMatcher::class,
         MakeNorm::class,
         MakeSequence::class,
-        MakeMatcher::class,
     ];
 
     public function register(): void
@@ -32,5 +32,6 @@ class GuardianServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerCommands();
+        $this->registerDriver();
     }
 }

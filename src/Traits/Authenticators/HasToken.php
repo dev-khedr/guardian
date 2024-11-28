@@ -9,22 +9,15 @@ use Laravel\Sanctum\NewAccessToken;
 
 trait HasToken
 {
-    protected NewAccessToken $token;
+    protected string $token;
 
-    protected function setToken(NewAccessToken $token): void
+    protected function setToken(string $token): void
     {
         $this->token = $token;
     }
 
-    public function getToken(?string $key = null, mixed $default = null): mixed
+    public function getToken(): string
     {
-        return $key
-            ? (Arr::get($this->token->toArray(), $key, $default))
-            : $this->token;
-    }
-
-    public function getStringToken(): string
-    {
-        return (string) $this->getToken('plainTextToken');
+        return $this->token;
     }
 }

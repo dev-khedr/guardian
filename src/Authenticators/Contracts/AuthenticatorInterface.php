@@ -31,9 +31,7 @@ interface AuthenticatorInterface
 
     public function failed(): bool;
 
-    public function getToken(?string $key = null, mixed $default = null): mixed;
-
-    public function getStringToken(): string;
+    public function getToken(): string;
 
     public function setMatchers(array $matchers): static;
 

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Raid\Guardian\Traits\Authenticators;
 
 use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
+use Raid\Guardian\Drivers\Contracts\DriverInterface;
+use Raid\Guardian\Drivers\Driver;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
 
 trait HasAuthenticatable
@@ -33,14 +35,10 @@ trait HasAuthenticatable
 
     protected function authenticate(AuthenticatableInterface $authenticatable, ?TokenInterface $token = null): void
     {
-        $arguments = $token
-            ? $token->toArray()
-            : ['name' => (string) $authenticatable->getAuthIdentifier()];
+        $generatedToken = app(DriverInterface::class)->generateToken($authenticatable, $token);
 
-        $this->setToken($authenticatable->createToken(...$arguments));
+        $this->setToken($generatedToken);
 
-        auth()->setUser($authenticatable);
-
-        $this->authenticated = true;
+        $this->isAuthenticated = true;
     }
 }
