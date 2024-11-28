@@ -1,6 +1,6 @@
 # Laravel Authentication Package
 
-This package is a wrapper for [Laravel Sanctum](https://github.com/laravel/sanctum) package.
+This package is a wrapper for any authentication package to provide a unified authentication flow.
 it introduces new concepts to authentication flow such as:
 
 - [Authenticatable](#authenticatable)
