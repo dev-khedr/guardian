@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
 use Raid\Guardian\Drivers\Contracts\DriverInterface;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
-use Raid\Guardian\Tokens\Token;
 use Exception;
 
 class JwtDriver implements DriverInterface

@@ -6,6 +6,7 @@ namespace Raid\Guardian\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Raid\Guardian\Commands\MakeAuthenticator;
+use Raid\Guardian\Commands\MakeDriver;
 use Raid\Guardian\Commands\MakeGuardian;
 use Raid\Guardian\Commands\MakeMatcher;
 use Raid\Guardian\Commands\MakeNorm;
@@ -18,6 +19,7 @@ class GuardianServiceProvider extends ServiceProvider
 
     protected array $commands = [
         MakeAuthenticator::class,
+        MakeDriver::class,
         MakeGuardian::class,
         MakeMatcher::class,
         MakeNorm::class,

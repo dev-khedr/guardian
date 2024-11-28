@@ -9,6 +9,7 @@ it introduces new concepts to authentication flow such as:
 - [Matchers](#matcher)
 - [Norms](#norm)
 - [Sequences](#sequence)
+- [Drivers](#driver)
 
 ## Requirements
 
@@ -698,6 +699,58 @@ $errorsAsArray = $authenticator->errors()->toArray();
 
 $errorsAsJson = $authenticator->errors()->toJson();
 ```
+
+## Driver
+
+The Driver class is responsible for handling the generation of tokens depending on the authentication package used.
+
+There are two types of drivers available:
+- `JwtDriver`
+- `SanctumDriver`
+
+You can define the default driver in the `config\guardian.php` file.
+
+```php
+<?php
+
+use Raid\Guardian\Drivers\SanctumDriver;
+
+return [
+
+    'default_driver' => SanctumDriver::class,
+];
+```
+
+You can create your own Driver using this command
+
+```bash
+php artisan raid:make-driver JwtDriver
+```
+
+This will output the following code
+
+```php
+<?php
+
+namespace Raid\Guardian\Drivers;
+
+use Raid\Guardian\Drivers\Contracts\DriverInterface;
+use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
+use Raid\Guardian\Tokens\Contracts\TokenInterface;
+
+class JwtDriver implements DriverInterface
+{
+    public function generateToken(array $payload): string
+    {
+    }
+}
+```
+
+The `Driver` must implement `DriverInterface`.
+
+The `Driver` class must define the `generateToken` method.
+
+The `generateToken` method will be called by the `Authenticator` to generate a token.
 
 And that's it.
 
