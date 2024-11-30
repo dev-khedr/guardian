@@ -6,7 +6,7 @@ namespace Raid\Guardian\Traits\Authenticators;
 
 trait HasToken
 {
-    protected string $token;
+    protected string $token = '';
 
     protected function setToken(string $token): void
     {
