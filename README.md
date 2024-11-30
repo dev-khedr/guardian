@@ -15,8 +15,9 @@ This package provides a unified authentication flow by acting as a wrapper aroun
 ## **Requirements**
 
 - PHP `>= 8.2`
+- An installed authentication package (e.g., Laravel Sanctum, Laravel Passport, or any other compatible package)
 
-Note that you need to install authentication packages separately to use this package as wrapper.
+This package acts as a wrapper and requires an existing authentication package to provide the underlying authentication mechanisms.
 
 ---
 
