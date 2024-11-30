@@ -720,6 +720,8 @@ The `Driver` class must define the `generateToken` method.
 
 The `generateToken` method will be called by the `Authenticator` to generate a token.
 
+<br>
+
 ### Authenticator Errors
 
 You can use the `Authenticator` class to handle authentication errors through `errors` method.
