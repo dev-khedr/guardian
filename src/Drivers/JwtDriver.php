@@ -2,11 +2,10 @@
 
 namespace Raid\Guardian\Drivers;
 
-use Illuminate\Support\Arr;
+use Exception;
 use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
 use Raid\Guardian\Drivers\Contracts\DriverInterface;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
-use Exception;
 
 class JwtDriver implements DriverInterface
 {
@@ -31,7 +30,7 @@ class JwtDriver implements DriverInterface
         foreach ($guards as $guardName => $guardConfig) {
             if (
                 $guardConfig['driver'] !== 'jwt' ||
-                !isset($guardConfig['provider'])
+                ! isset($guardConfig['provider'])
             ) {
                 continue;
             }
@@ -39,8 +38,8 @@ class JwtDriver implements DriverInterface
             $providerName = $guardConfig['provider'];
 
             if (
-                !isset($providers[$providerName]) ||
-                !isset($providers[$providerName]['model']) ||
+                ! isset($providers[$providerName]) ||
+                ! isset($providers[$providerName]['model']) ||
                 $providers[$providerName]['model'] !== get_class($authenticatable)
             ) {
                 continue;
@@ -49,7 +48,7 @@ class JwtDriver implements DriverInterface
             return $guardName;
         }
 
-        throw new Exception("No guard found for model: " . get_class($authenticatable));
+        throw new Exception('No guard found for model: '.get_class($authenticatable));
     }
 
     private function getTimeToLive(?TokenInterface $token): int

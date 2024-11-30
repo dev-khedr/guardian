@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Raid\Guardian\Traits\Authenticators;
 
-use Illuminate\Support\Arr;
-use Laravel\Sanctum\NewAccessToken;
-
 trait HasToken
 {
     protected string $token;

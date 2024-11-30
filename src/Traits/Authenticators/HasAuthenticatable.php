@@ -6,7 +6,6 @@ namespace Raid\Guardian\Traits\Authenticators;
 
 use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
 use Raid\Guardian\Drivers\Contracts\DriverInterface;
-use Raid\Guardian\Drivers\Driver;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
 
 trait HasAuthenticatable

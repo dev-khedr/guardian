@@ -702,13 +702,13 @@ This will output the following code
 
 namespace Raid\Guardian\Drivers;
 
-use Raid\Guardian\Drivers\Contracts\DriverInterface;
-use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
+use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
+use Raid\Guardian\Drivers\Contracts\DriverInterface;
 
 class JwtDriver implements DriverInterface
 {
-    public function generateToken(array $payload): string
+    public function generateToken(AuthenticatableInterface $authenticatable, ?TokenInterface $token = null): string
     {
     }
 }

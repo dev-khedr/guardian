@@ -5,7 +5,6 @@ namespace Raid\Guardian\Drivers;
 use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
 use Raid\Guardian\Drivers\Contracts\DriverInterface;
 use Raid\Guardian\Tokens\Contracts\TokenInterface;
-use Exception;
 
 class SanctumDriver implements DriverInterface
 {
