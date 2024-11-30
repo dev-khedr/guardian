@@ -21,9 +21,6 @@
     "require": {
         "php": "^8.2"
     },
-    "require-dev": {
-        "laravel/pint": "v1.18.3"
-    },
     "autoload": {
         "psr-4": {
             "Raid\\Guardian\\": "src"
