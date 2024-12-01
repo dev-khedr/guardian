@@ -10,14 +10,19 @@ class SanctumDriver implements DriverInterface
 {
     public function generateToken(AuthenticatableInterface $authenticatable, ?TokenInterface $token = null): string
     {
-        $arguments = $token
-            ? $token->toArray()
-            : ['name' => (string) $authenticatable->getAuthIdentifier()];
-
-        $generatedToken = $authenticatable->createToken(...$arguments)->plainTextToken;
+        $generatedToken = $authenticatable->createToken(
+            ...$this->resolveToken($authenticatable, $token),
+        )->plainTextToken;
 
         auth()->setUser($authenticatable);
 
         return $generatedToken;
+    }
+
+    private function resolveToken(AuthenticatableInterface $authenticatable, ?TokenInterface $token = null): array
+    {
+        return $token
+            ? [$token->toArray()]
+            : [(string) $authenticatable->getAuthIdentifier()];
     }
 }

@@ -249,14 +249,33 @@ php artisan raid:make-sequence LoginSequence
 
 namespace App\Http\Authentication\Sequences;
 
+use App\Core\Integrations\Mail\MailService;
+use App\Mail\TwoFactorMail;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Sequences\Contracts\SequenceInterface;
 
-class TwoFactorEmailSequence implements SequenceInterface
+class TwoFactorEmailStep implements SequenceInterface
 {
+    public function __construct(
+        private readonly MailService $mailService,
+    ) {
+
+    }
+
     public function handle(AuthenticatorInterface $authenticator): void
     {
-        // Logic for Two-Factor Authentication
+        $code = generate_code();
+        
+        $authenticatable = $authenticator->getAuthenticatable();
+
+        $authenticatable->update([
+            'two_factor_email_code' => $code,
+        ]);
+        
+        $this->mailService->send(
+            $authenticatable->getAttribute('email'),,
+            new TwoFactorMail($authenticatable->getAttribute('name'), $code),
+        );
     }
 }
 ```
