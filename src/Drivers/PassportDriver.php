@@ -10,7 +10,9 @@ class PassportDriver implements DriverInterface
 {
     public function generateToken(AuthenticatableInterface $authenticatable, ?TokenInterface $token = null): string
     {
-        $generatedToken = $authenticatable->createToken($this->resolveToken($token))->accessToken;
+        $generatedToken = $authenticatable->createToken(
+            ...$this->resolveToken($authenticatable, $token),
+        )->accessToken;
 
         auth()->setUser($authenticatable);
 
