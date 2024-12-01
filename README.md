@@ -239,7 +239,7 @@ Adds additional steps to the authentication process.
 #### **Command to Generate:**
 
 ```bash
-php artisan raid:make-sequence LoginSequence
+php artisan raid:make-sequence TwoFactorEmailSequence
 ```
 
 #### **Configuration Example:**
@@ -254,7 +254,7 @@ use App\Mail\TwoFactorMail;
 use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
 use Raid\Guardian\Sequences\Contracts\SequenceInterface;
 
-class TwoFactorEmailStep implements SequenceInterface
+class TwoFactorEmailSequence implements SequenceInterface
 {
     public function __construct(
         private readonly MailService $mailService,
@@ -273,7 +273,7 @@ class TwoFactorEmailStep implements SequenceInterface
         ]);
         
         $this->mailService->send(
-            $authenticatable->getAttribute('email'),,
+            $authenticatable->getAttribute('email'),
             new TwoFactorMail($authenticatable->getAttribute('name'), $code),
         );
     }
