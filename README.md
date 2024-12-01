@@ -165,6 +165,9 @@ class SystemAuthenticator extends Authenticator implements AuthenticatorInterfac
     public const NAME = 'system';
 }
 ```
+### Defining Authenticators
+
+Authenticators can be defined in the guardian class or via the configuration file. See the [Configuration Section](#components-configuration) for details.
 
 ---
 
@@ -234,6 +237,10 @@ class VerifiedNorm implements NormInterface
 }
 ```
 
+### Defining Norms
+
+Norms can be defined in the authenticator class or via the configuration file. See the [Configuration Section](#components-configuration) for details.
+
 ---
 
 ### **Sequence**
@@ -284,6 +291,10 @@ class TwoFactorEmailSequence implements SequenceInterface
 }
 ```
 
+### Defining Sequences
+
+Sequences can be defined in the authenticator class or via the configuration file. See the [Configuration Section](#components-configuration) for details.
+
 ---
 
 ### **Driver**
@@ -331,11 +342,70 @@ $authenticator->errors()->toArray();
 
 ## **Components Configuration**
 
+### **Defining Authenticators**
+
+Authenticators manages the core authentication logic.
+
+You can configure the authenticators for a Guardian in two ways:
+
+**1. Using a Property in the Guardian Class**
+
+Define the list of authenticators directly in your custom Guardian class:
+
+```php
+<?php
+
+namespace App\Http\Authentication\Guardians;
+
+use App\Http\Authentication\Authenticators\SystemAuthenticator;
+use Raid\Guardian\Guardians\Guardian;
+use Raid\Guardian\Guardians\Contracts\GuardianInterface;
+
+class UserGuardian extends Guardian implements GuardianInterface
+{
+    protected array $authenticators = [
+        SystemAuthenticator::class,
+    ];
+
+    protected string $defaultAuthenticator = SystemAuthenticator::class; // Optional: Set the default authenticator
+}
+```
+
+**2. Using the Configuration File**
+
+Define authenticators in the `config/guardian.php` file under `guardian_authenticators`:
+
+```php
+<?php
+
+use App\Http\Authentication\Authenticators\SystemAuthenticator;
+use App\Http\Authentication\Guardians\UserGuardian;
+
+return [
+
+    'guardian_authenticators' => [
+        UserGuardian::class => [
+            SystemAuthenticator::class,
+        ],
+    ],
+];
+```
+
+**Default Authenticator**
+
+To set a default authenticator for a Guardian:
+- **In the Guardian Class:** Use the $defaultAuthenticator property.
+- **In the Configuration File:** Use guardian_authenticators key.
+
+If no default authenticator is specified, the Guardian will use the default authenticator configured in  `config/guardian.php` under `default_authenticator`.
+
+
+
 ### **Defining Matchers**
 
 Matchers are used to locate the user based on credentials. You can define matchers in two ways:
 
-#### **1. Using a Property in the Authenticator Class**
+**1. Using a Property in the Authenticator Class**
 
 In your custom authenticator class, define the `matchers` property:
 
@@ -356,7 +426,7 @@ class SystemAuthenticator extends Authenticator implements AuthenticatorInterfac
 }
 ```
 
-#### **2. Using the Configuration File**
+**2. Using the Configuration File**
 
 You can also define matchers in the `config/guardian.php` file under `authenticator_matchers`:
 
@@ -380,7 +450,7 @@ return [
 
 Norms validate the authentication process. Similar to matchers, norms can be defined in two ways:
 
-#### **1. Using a Property in the Authenticator Class**
+**1. Using a Property in the Authenticator Class**
 
 In your custom authenticator class, define the `norms` property:
 
@@ -401,7 +471,7 @@ class SystemAuthenticator extends Authenticator implements AuthenticatorInterfac
 }
 ```
 
-#### **2. Using the Configuration File**
+**2. Using the Configuration File**
 
 Define norms in the `config/guardian.php` file under `authenticator_norms`:
 
@@ -426,7 +496,7 @@ return [
 
 Sequences add extra steps to the authentication process. Like matchers and norms, they can be defined in two ways:
 
-#### **1. Using a Property in the Authenticator Class**
+**1. Using a Property in the Authenticator Class**
 
 In your custom authenticator class, define the `sequences` property:
 
@@ -446,7 +516,7 @@ class SystemAuthenticator extends Authenticator implements AuthenticatorInterfac
     ];
 }
 ```
-#### **2. Using the Configuration File**
+**2. Using the Configuration File**
 
 Define sequences in the `config/guardian.php` file under `authenticator_sequences`:
 
@@ -467,9 +537,9 @@ return [
 ];
 ```
 
-### **Summary**
-- #### **Property in Authenticator Class:** Encapsulation of matchers, norms, and sequences within the authenticator class.
-- #### **Configuration File:** Centralized configuration for easier management across multiple authenticators.
+**Summary**
+- **Property in Authenticator Class:** Encapsulation of matchers, norms, and sequences within the authenticator class.
+- **Configuration File:** Centralized configuration for easier management across multiple authenticators.
 
 This flexibility allows you to structure your application according to your needs.
 
