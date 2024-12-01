@@ -284,7 +284,7 @@ class TwoFactorEmailSequence implements SequenceInterface
 
 ### **Driver**
 
-Handles token generation for authenticated users.
+Handles token generation for authenticated users depending on the authentication package.
 
 #### **Driver Types:**
 - `PassportDriver`
