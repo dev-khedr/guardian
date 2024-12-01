@@ -167,7 +167,7 @@ class SystemAuthenticator extends Authenticator implements AuthenticatorInterfac
 ```
 ### Defining Authenticators
 
-Authenticators can be defined in the guardian class or via the configuration file. See the [Configuration Section](#components-configuration) for details.
+For more details on configuring authenticators, see the [Configuration Section](#defining-authenticators-1).
 
 ---
 
@@ -199,7 +199,7 @@ class EmailMatcher extends Matcher implements MatcherInterface
 
 ### Defining Matchers
 
-Matchers can be defined in the authenticator class or via the configuration file. See the [Configuration Section](#components-configuration) for details.
+For more details on configuring matchers, see the [Configuration Section](#defining-matchers-1).
 
 ---
 
@@ -239,7 +239,7 @@ class VerifiedNorm implements NormInterface
 
 ### Defining Norms
 
-Norms can be defined in the authenticator class or via the configuration file. See the [Configuration Section](#components-configuration) for details.
+For more details on configuring norms, see the [Configuration Section](#defining-norms-1).
 
 ---
 
@@ -293,7 +293,7 @@ class TwoFactorEmailSequence implements SequenceInterface
 
 ### Defining Sequences
 
-Sequences can be defined in the authenticator class or via the configuration file. See the [Configuration Section](#components-configuration) for details.
+For more details on configuring matchers, see the [Configuration Section](#defining-sequences-1).
 
 ---
 
@@ -301,12 +301,12 @@ Sequences can be defined in the authenticator class or via the configuration fil
 
 Handles token generation for authenticated users depending on the authentication package.
 
-#### **Driver Types:**
+**Driver Types:**
 - `PassportDriver`
 - `JwtDriver`
 - `SanctumDriver`
 
-#### **Setting the Default Driver:**
+**Defining the Default Driver:**
 
 Update the configuration in `config\guardian.php`:
 
@@ -321,10 +321,30 @@ return [
 ];
 ```
 
-#### **Creating a Custom Driver:**
+**Creating a Custom Driver:**
 
 ```bash
 php artisan raid:make-driver CustomDriver
+```
+
+#### **Configuration Example:**
+
+```php
+<?php
+
+namespace App\Http\Authentication\Drivers;
+
+use Raid\Guardian\Tokens\Contracts\TokenInterface;
+use Raid\Guardian\Authenticatable\Contracts\AuthenticatableInterface;
+use Raid\Guardian\Drivers\Contracts\DriverInterface;
+
+class CustomDriver implements DriverInterface
+{
+    public function generateToken(Authenticatable Interface $authenticatable, ?TokenInterface $token = null): string
+    {
+        // Custom logic for generating tokens
+    }
+}
 ```
 
 ---
@@ -341,6 +361,16 @@ $authenticator->errors()->toArray();
 ---
 
 ## **Components Configuration**
+
+### **Key Properties for Configuration**
+
+| Property                 | Description                                   |
+|--------------------------|-----------------------------------------------|
+| `$authenticators`        | List of authenticators for the Guardian.      |
+| `$defaultAuthenticator`  | Default authenticator for the Guardian.       |
+| `$matchers`              | List of matchers for the Authenticator.       |
+| `$norms`                 | List of norms for the Authenticator.          |
+| `$sequences`             | List of sequences for the Authenticator.      |
 
 ### **Defining Authenticators**
 
@@ -398,8 +428,6 @@ To set a default authenticator for a Guardian:
 - **In the Configuration File:** Use guardian_authenticators key.
 
 If no default authenticator is specified, the Guardian will use the default authenticator configured in  `config/guardian.php` under `default_authenticator`.
-
-
 
 ### **Defining Matchers**
 
