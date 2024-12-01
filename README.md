@@ -194,6 +194,10 @@ class EmailMatcher extends Matcher implements MatcherInterface
 }
 ```
 
+### Defining Matchers
+
+Matchers can be defined in the authenticator class or via the configuration file. See the [Configuration Section](#components-configuration) for details.
+
 ---
 
 ### **Norm**
@@ -322,6 +326,152 @@ Manage errors using the `errors()` method:
 $authenticator->fail('key', 'message');
 $authenticator->errors()->toArray();
 ```
+
+---
+
+## **Components Configuration**
+
+### **Defining Matchers**
+
+Matchers are used to locate the user based on credentials. You can define matchers in two ways:
+
+#### **1. Using a Property in the Authenticator Class**
+
+In your custom authenticator class, define the `matchers` property:
+
+```php
+<?php
+
+namespace App\Http\Authentication\Authenticators;
+
+use App\Http\Authentication\Matchers\EmailMatcher;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+
+class SystemAuthenticator extends Authenticator implements AuthenticatorInterface
+{
+    protected array $matchers = [
+        EmailMatcher::class,
+    ];
+}
+```
+
+#### **2. Using the Configuration File**
+
+You can also define matchers in the `config/guardian.php` file under `authenticator_matchers`:
+
+```php
+<?php
+
+use App\Http\Authentication\Matchers\EmailMatcher;
+use App\Http\Authentication\Authenticators\SystemAuthenticator;
+
+return [
+
+    'authenticator_matchers' => [
+        SystemAuthenticator::class => [
+            EmailMatcher::class,
+        ],
+    ],
+];
+```
+
+### **Defining Norms**
+
+Norms validate the authentication process. Similar to matchers, norms can be defined in two ways:
+
+#### **1. Using a Property in the Authenticator Class**
+
+In your custom authenticator class, define the `norms` property:
+
+```php
+<?php
+
+namespace App\Http\Authentication\Authenticators;
+
+use App\Http\Authentication\Norms\VerifiedNorm;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+
+class SystemAuthenticator extends Authenticator implements AuthenticatorInterface
+{
+    protected array $norms = [
+        VerifiedNorm::class,
+    ];
+}
+```
+
+#### **2. Using the Configuration File**
+
+Define norms in the `config/guardian.php` file under `authenticator_norms`:
+
+```php
+<?php
+
+use App\Http\Authentication\Norms\VerifiedNorm;
+use App\Http\Authentication\Authenticators\SystemAuthenticator;
+
+return [
+
+    'authenticator_norms' => [
+        SystemAuthenticator::class => [
+            VerifiedNorm::class,
+        ],
+    ],
+
+];
+```
+
+### **Defining Sequences**
+
+Sequences add extra steps to the authentication process. Like matchers and norms, they can be defined in two ways:
+
+#### **1. Using a Property in the Authenticator Class**
+
+In your custom authenticator class, define the `sequences` property:
+
+```php
+<?php
+
+namespace App\Http\Authentication\Authenticators;
+
+use App\Http\Authentication\Sequences\TwoFactorEmailSequence;
+use Raid\Guardian\Authenticators\Authenticator;
+use Raid\Guardian\Authenticators\Contracts\AuthenticatorInterface;
+
+class SystemAuthenticator extends Authenticator implements AuthenticatorInterface
+{
+    protected array $sequences = [
+        TwoFactorEmailSequence::class,
+    ];
+}
+```
+#### **2. Using the Configuration File**
+
+Define sequences in the `config/guardian.php` file under `authenticator_sequences`:
+
+```php
+<?php
+
+use App\Http\Authentication\Sequences\TwoFactorEmailSequence;
+use App\Http\Authentication\Authenticators\SystemAuthenticator;
+
+return [
+
+    'authenticator_sequences' => [
+        SystemAuthenticator::class => [
+            TwoFactorEmailSequence::class,
+        ],
+    ],
+
+];
+```
+
+### **Summary**
+- #### **Property in Authenticator Class:** Encapsulation of matchers, norms, and sequences within the authenticator class.
+- #### **Configuration File:** Centralized configuration for easier management across multiple authenticators.
+
+This flexibility allows you to structure your application according to your needs.
 
 ---
 
